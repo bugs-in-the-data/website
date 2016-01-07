@@ -10,5 +10,6 @@ The official product of team-23, the webtool for visualizing biodiversity data
   
 # Run
 - in the project root, enter:
+  - ```./manage.py migrate```
   - ```./manage.py runserver```
   
