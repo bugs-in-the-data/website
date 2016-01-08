@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/1.9/ref/settings/
 """
 
 import os
-
+import local_settings
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'app',
 ]
 
 MIDDLEWARE_CLASSES = [
@@ -74,16 +75,20 @@ WSGI_APPLICATION = 'website.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.9/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-      'ENGINE': 'django.db.backends.mysql',
-      'NAME': 'bugdata',
-	  'USER': 'root',
-	  'PASSWORD': 'Temp123',
-	  'HOST': 'localhost',
-	  'PORT': '3306',
-    }
-}
+## NOTE:
+##  within this same directory, create a file called `local_settings.py`
+##  and put the below database configuration into that file filled with
+##  your database info.
+# DATABASES = {
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.mysql',
+    #     'NAME': 'DB_NAME',
+    #     'USER': 'USER_NAME',
+    #     'PASSWORD': 'DB_PASSWORD',
+    #     'HOST': 'DB_HOST',
+    #     'PORT': '3306',
+    # }
+# }
 
 
 # Password validation
@@ -123,3 +128,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.9/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(os.path.dirname(BASE_DIR), "static", "static_root")
+
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, "static", "resources"),
+)
