@@ -7,12 +7,30 @@
   <h1>{{name}} ayy lmao</h1>
   <!-- Indicates a dangerous or potentially negative action -->
   <button type="button" class="btn btn-primary" name="button">
-    test button
+    bootstrap works
   </button>
+  <hr>
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-6" style="background-color: blue">
+        <!-- map section -->
+        {% include 'map.html' %}
+      </div>
+      <div class="col-sm-6" style="background-color: green">
+        <!-- directory section -->
+        {% include 'directory.html' %}
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-12" style="background-color: red">
+        <!-- graph section  -->
+        {% include 'graph.html' %}
+      </div>
+    </div>
+  </div>
   <footer>
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <script src="{% static 'js/bootstrap.min.js' %}"></script>
   </footer>
-
 </body>
