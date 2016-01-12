@@ -11,7 +11,6 @@ https://docs.djangoproject.com/en/1.9/ref/settings/
 """
 
 import os
-import local_settings
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -79,17 +78,9 @@ WSGI_APPLICATION = 'website.wsgi.application'
 ##  within this same directory, create a file called `local_settings.py`
 ##  and put the below database configuration into that file filled with
 ##  your database info.
-# DATABASES = {
-    # 'default': {
-    #     'ENGINE': 'django.db.backends.mysql',
-    #     'NAME': 'DB_NAME',
-    #     'USER': 'USER_NAME',
-    #     'PASSWORD': 'DB_PASSWORD',
-    #     'HOST': 'DB_HOST',
-    #     'PORT': '3306',
-    # }
-# }
 
+
+from local_settings import DATABASES
 
 # Password validation
 # https://docs.djangoproject.com/en/1.9/ref/settings/#auth-password-validators
