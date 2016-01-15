@@ -1,0 +1,12 @@
+.side-scroll {
+    width: 100%;
+    overflow-x: auto;
+    white-space: nowrap;
+}
+
+.graph-box {
+  overflow: hidden;
+  width: 400px;
+  display: inline-block;
+  margin-left: 20px;
+}
