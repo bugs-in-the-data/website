@@ -1,0 +1,59 @@
+<div id="tree">
+	<ul id="treeData" style="display: none;">
+		<li id="id1" title="Look, a tool tip!">item1 with key and tooltip
+		<li id="id2">item2
+		<li id="id3" class="folder">Folder with some children
+		<ul>
+			<li id="id3.1">Sub-item 3.1
+			<ul>
+				<li id="id3.1.1">Sub-item 3.1.1
+				<li id="id3.1.2">Sub-item 3.1.2
+			</ul>
+			<li id="id3.2">Sub-item 3.2
+			<ul>
+				<li id="id3.2.1">Sub-item 3.2.1
+				<li id="id3.2.2">Sub-item 3.2.2
+			</ul>
+		</ul>
+		<li id="id4" class="expanded">Document with some children (expanded on init)
+		<ul>
+			<li id="id4.1"  class="active focused">Sub-item 4.1 (active and focus on init)
+			<ul>
+				<li id="id4.1.1">Sub-item 4.1.1
+				<li id="id4.1.2">Sub-item 4.1.2
+			</ul>
+			<li id="id4.2">Sub-item 4.2
+			<ul>
+				<li id="id4.2.1">Sub-item 4.2.1
+				<li id="id4.2.2">Sub-item 4.2.2
+				<li id="id4.2.3">Sub-item 4.2.2
+				<li id="id4.2.4">Sub-item 4.2.2
+				<li id="id4.2.5">Sub-item 4.2.2
+				<li id="id4.2.6">Sub-item 4.2.2
+				<li id="id4.2.7">Sub-item 4.2.2
+				<li id="id4.2.8">Sub-item 4.2.2
+				<li id="id4.2.9">Sub-item 4.2.2
+				<li id="id4.2.10">Sub-item 4.2.2
+				<li id="id4.2.11">Sub-item 4.2.2
+				<li id="id4.2.12">Sub-item 4.2.2
+				<li id="id4.2.13">Sub-item 4.2.2
+				<li id="id4.2.14">Sub-item 4.2.2
+				<li id="id4.2.15">Sub-item 4.2.2
+			</ul>
+		</ul>
+	</ul>
+</div>
+
+<script type="text/javascript">
+
+$(function(){
+	$("#tree").fancytree({
+		checkbox: true, // gives nodes checkboxes
+		selectMode: 3, // option 3 selects or deselects all children
+		icons: false, // gets rid of ugly icons
+	});
+
+});
+
+
+</script>
