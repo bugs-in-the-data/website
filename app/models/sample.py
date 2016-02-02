@@ -5,6 +5,7 @@ from site import SiteModel
 
 class SampleModel(models.Model):
     site = models.ForeignKey(SiteModel, on_delete=models.SET_NULL, null=True)
+    sample_name = models.CharField(max_length=250, null=True)
     date = models.DateField(auto_now=False, auto_now_add=False, null=True)
     subsite = models.IntegerField(null=True)
     microhabitat = models.CharField(max_length=250, null=True)
