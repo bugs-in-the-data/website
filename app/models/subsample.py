@@ -11,10 +11,7 @@ class SubsampleModel(models.Model):
     sub_genus = models.CharField(max_length=250, null=True)
     species = models.CharField(max_length=250, null=True)
     taxa = models.CharField(max_length=250, null=True)
-    count = models.IntegerField(null=True)
-    percent_subsample = models.DecimalField(max_digits=10, decimal_places=3, null=True)
     total_count = models.IntegerField(null=True)
-    comment = models.TextField(null=True)
 
     def getData(self):
         test = {

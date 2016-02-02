@@ -22,33 +22,54 @@
   <title>Biodiversity</title>
 </head>
 <body>
-  <h1>Biodiversity data {{ name }}</h1>
-  <hr>
-  <div class="container">
+  <nav class="navbar navbar-inverse">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <a class="navbar-brand" href="#">Working Title</a>
+      </div>
+    </div>
+  </nav>
+  <div class="container-fluid">
     <div class="row">
-      <div class="col-sm-6" style="background-color: blue">
-        <!-- map section -->
-        {% include 'map.html' %}
+      <div class="col-sm-6">
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h3 class="panel-title">Map</h3>
+          </div>
+          <div class="panel-body">
+            {% include 'map.html' %}
+          </div>
+        </div>
       </div>
 
       <div class="col-sm-6">
-        <h2>Filter View</h2>
         <div style="overflow: hidden;">
-          <div style="height: 50%;
-                        overflow: auto;
-                        ">
-            <!-- filter section -->
-            {% include 'filter.html' %}
+          <div style="height: 50%; overflow: auto;">
+            <div class="panel panel-default">
+              <div class="panel-heading">
+                <h3 class="panel-title">Filter</h3>
+              </div>
+              <div class="panel-body">
+                {% include 'filter.html' %}
+              </div>
+            </div>
           </div>
         </div>
 
       </div>
     </div>
     <div class="row">
-      <h2>graph section <small><i>All graphs generated off of placeholder data.</i></small></h2>
-      <div class="col-sm-12 side-scroll">
-        <!-- graph section  -->
-        {% include 'graph.html' %}
+      <div class="col-sm-12">
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h3 class="panel-title">Graphs</h3>
+          </div>
+          <div class="panel-body">
+            <div class="side-scroll">
+              {% include 'graph.html' %}
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
