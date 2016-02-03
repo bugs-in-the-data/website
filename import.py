@@ -1,8 +1,4 @@
-##
 # Install numpy and pandas!!
-#
-#
-##
 import numpy as np
 import pandas as pd
 import MySQLdb
@@ -25,16 +21,67 @@ def main():
 	# Load data into memory
 	och = load_data_from_csv('../data/och.csv')
 	habitat = load_data_from_csv('../data/habitat.csv')
-	# Example usage of numpy arrays:
+
+	# NOTE: inserting into site table
+	# for row in habitat:
+	# 	state 		 = row['State:Installation'].split(':')[0].strip()
+	# 	installation = row['State:Installation'].split(':')[1].strip()
+	# 	drainage 	 = str(row['Drainage']).strip()
+	# 	mtnRange 	 = row['MtnRange'].strip()
+	# 	name 		 = str(row['Site']).strip()
+	#
+	# 	x.execute("SELECT * FROM app_sitemodel WHERE name =\""+name+"\"")
+	# 	existing = x.fetchall()
+	# 	if not existing:
+	# 		try:
+	# 			x.execute("""INSERT INTO app_sitemodel (state, installation, drainage, mountain_range, name) VALUES (%s, %s, %s, %s, %s)""", (state, installation, drainage, mtnRange, name))
+	# 			conn.commit()
+	# 		except:
+	# 			conn.rollback()
+	#
+	# 	else:
+	# 		print str(existing[0][0])
+
+	## NOTE: inserting into sample table
+	for row in habitat:
+		site			= "NULL" if str(row['Site']).strip() == 'nan' else str(row['Site']).strip()
+		sample_name		= "NULL" if str(row['Sample Code with Date']).strip() == 'nan' else str(row['Sample Code with Date']).strip()
+		date			= "NULL" if str(row['Years'])+'-01-01' == 'nan' else str(row['Years'])+'-01-01'
+		subsite			= "NULL" if str(row['Subsite']).strip() == 'nan' else str(row['Subsite']).strip()
+		microhabitat	= "NULL" if str(row['Microhabitat']).strip() == 'nan' else str(row['Microhabitat']).strip()
+		sample_hydro	= "NULL" if str(row['SampleHydro']).strip() == 'nan' else str(row['SampleHydro']).strip()
+		habitat_size	= "NULL" if str(row['Habitat Size']).strip() == 'nan' else str(row['Habitat Size']).strip()
+		zone			= "NULL" if str(row['Zone']).strip() == 'nan' else str(row['Zone']).strip()
+		utm_easting		= "NULL" if str(row['UTM Easting']).strip() == 'nan' else str(row['UTM Easting']).strip()
+		utm_northing	= "NULL" if str(row['UTM Northing']).strip() == 'nan' else str(row['UTM Northing']).strip()
+
+		x.execute("SELECT * FROM app_sitemodel WHERE name =\""+site+"\"")
+		existing = x.fetchall()
+		if existing:
+			site_key = int(existing[0][0])
+			try:
+				x.execute("""INSERT INTO app_samplemodel (date, subsite, microhabitat, sample_hydro, habitat_size, zone, utm_easting, utm_northing, site_id, sample_name) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)""", (date, subsite, microhabitat, sample_hydro, habitat_size, zone, utm_easting, utm_northing, site_key, sample_name))
+				conn.commit()
+			except:
+				conn.rollback()
+
+			# print "site: " + site
+			# print "sample_name: " + sample_name
+			# print "date: " + date
+			# print "subsite: " + subsite
+			# print "microhabitat: " + microhabitat
+			# print "sample_hydro: " + sample_hydro
+			# print "habitat_size: " + habitat_size
+			# print "zone: " + zone
+			# print "utm_easting: " + utm_easting
+			# print "utm_northing: " + utm_northing
+
+		else:
+			print "could not find site named: " + site
+
+	## NOTE: inserting into subsample table
 	# for row in och:
 	# 	print row['Order'], row['Family']
-	for row in habitat:
-		# x.execute("""INSERT INTO app_sitemodel VALUES ())
-		print "State: " + row['State:Installation'].split(':')[0].strip()
-		print "Installation: " + row['State:Installation'].split(':')[1].strip()
-		print "Drainage: " + str(row['Drainage']).strip()
-		print "Mountain Range: " + row['MtnRange'].strip()
-		print " "
 
 if __name__ == '__main__':
 	main()
