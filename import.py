@@ -11,10 +11,10 @@ def load_data_from_csv(filename):
 
 def main():
 	conn = MySQLdb.connect(
-				host = "localhost",
-				user = "root",
-				passwd = "Temp123",
-				db="bugdata"
+				host = "",
+				user = "",
+				passwd = "",
+				db=""
 			)
 	x = conn.cursor()
 
