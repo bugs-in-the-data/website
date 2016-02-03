@@ -23,24 +23,23 @@ def main():
 	habitat = load_data_from_csv('../data/habitat.csv')
 
 	# NOTE: inserting into site table
-	# for row in habitat:
-	# 	state 		 = row['State:Installation'].split(':')[0].strip()
-	# 	installation = row['State:Installation'].split(':')[1].strip()
-	# 	drainage 	 = str(row['Drainage']).strip()
-	# 	mtnRange 	 = row['MtnRange'].strip()
-	# 	name 		 = str(row['Site']).strip()
-	#
-	# 	x.execute("SELECT * FROM app_sitemodel WHERE name =\""+name+"\"")
-	# 	existing = x.fetchall()
-	# 	if not existing:
-	# 		try:
-	# 			x.execute("""INSERT INTO app_sitemodel (state, installation, drainage, mountain_range, name) VALUES (%s, %s, %s, %s, %s)""", (state, installation, drainage, mtnRange, name))
-	# 			conn.commit()
-	# 		except:
-	# 			conn.rollback()
-	#
-	# 	else:
-	# 		print str(existing[0][0])
+	for row in habitat:
+		state 		 = row['State:Installation'].split(':')[0].strip()
+		installation = row['State:Installation'].split(':')[1].strip()
+		drainage 	 = str(row['Drainage']).strip()
+		mtnRange 	 = row['MtnRange'].strip()
+		name 		 = str(row['Site']).strip()
+
+		x.execute("SELECT * FROM app_sitemodel WHERE name =\""+name+"\"")
+		existing = x.fetchall()
+		if not existing:
+			try:
+				x.execute("""INSERT INTO app_sitemodel (state, installation, drainage, mountain_range, name) VALUES (%s, %s, %s, %s, %s)""", (state, installation, drainage, mtnRange, name))
+				conn.commit()
+			except:
+				conn.rollback()
+		else:
+			print str(existing[0][0])
 
 	## NOTE: inserting into sample table
 	for row in habitat:
@@ -64,24 +63,34 @@ def main():
 				conn.commit()
 			except:
 				conn.rollback()
-
-			# print "site: " + site
-			# print "sample_name: " + sample_name
-			# print "date: " + date
-			# print "subsite: " + subsite
-			# print "microhabitat: " + microhabitat
-			# print "sample_hydro: " + sample_hydro
-			# print "habitat_size: " + habitat_size
-			# print "zone: " + zone
-			# print "utm_easting: " + utm_easting
-			# print "utm_northing: " + utm_northing
-
 		else:
 			print "could not find site named: " + site
 
 	## NOTE: inserting into subsample table
-	# for row in och:
-	# 	print row['Order'], row['Family']
+	for row in och:
+		sample_id 		= "NULL" if str(row['Sample ID']).strip() == 'nan' else str(row['Sample ID']).strip()
+		order			= "NULL" if str(row['Order']).strip() == 'nan' else str(row['Order']).strip()
+		family			= "NULL" if str(row['Family']).strip() == 'nan' else str(row['Family']).strip()
+		genus			= "NULL" if str(row['Genus/sub-genus']).strip() == 'nan' else str(row['Genus/sub-genus']).strip()
+		sub_genus       = "NULL"
+		species			= "NULL" if str(row['Species']).strip() == 'nan' else str(row['Species']).strip()
+		taxa			= "NULL" if str(row['Taxa']).strip() == 'nan' else str(row['Taxa']).strip()
+		total_count		= "NULL" if str(row['Total Counts']).strip() == 'nan' else str(row['Total Counts']).strip()
+
+		x.execute("SELECT * FROM app_samplemodel WHERE sample_name =\""+sample_id+"\"")
+		existing = x.fetchall()
+
+		if existing and taxa != 'NO OCH PRESENT':
+			sample_id = int(existing[0][0])
+			try:
+				x.execute("""INSERT INTO app_subsamplemodel(order_name, family, genus, sub_genus, species, taxa, total_count, sample_id) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)""", (order, family, genus, sub_genus, species, taxa, total_count, sample_id))
+				# x.execute("INSERT INTO app_subsamplemodel (order, family, genus, sub_genus, species, taxa, total_count, sample_id) VALUES (\""+order+"\", \""+family+"\", \""+genus+"\", \""+sub_genus+"\", \""+species+"\", \""+taxa+"\", "+str(total_count)+", "+str(sample_id)+")")
+				conn.commit()
+			except MySQLdb.Error, e:
+				print e
+				conn.rollback()
+		else:
+			print "count not find: " + sample_id
 
 if __name__ == '__main__':
 	main()
