@@ -1,7 +1,10 @@
 from __future__ import unicode_literals
 
 from django.db import models
+from django.db.models import Count
+from django.core import serializers
 from sample import SampleModel
+import json
 
 class SubsampleModel(models.Model):
     sample = models.ForeignKey(SampleModel, on_delete=models.SET_NULL, null=True)
@@ -14,7 +17,9 @@ class SubsampleModel(models.Model):
     total_count = models.IntegerField(null=True)
 
     def getData(self):
-        test = {
-            'name': 'Ty'
-        }
-        return test
+        data = []
+        unique_orders = SubsampleModel.objects.values('order_name').annotate(order_count=Count('order_name'))
+        for u in unique_orders:
+            data.append([u["order_name"].encode("utf-8"), u["order_count"]])
+
+        return data
