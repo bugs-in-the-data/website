@@ -3,11 +3,55 @@
 
 <script>
   var map;
-  require(["esri/map", "dojo/domReady!"], function(Map) {
+  require([
+        "esri/map", 
+        "esri/geometry/Point",
+        "esri/symbols/SimpleMarkerSymbol",
+        "esri/graphic",
+        "esri/layers/GraphicsLayer",
+        "esri/Color",
+        "dojo/domReady!"
+      ], function(
+        Map, Point, SimpleMarkerSymbol, Graphic, GraphicsLayer, Color
+      ) {
     map = new Map("map", {
       center: [-112, 35],
       zoom: 6,
       basemap: "topo"
+    });
+
+    map.on("load", function() {
+      //Basic test points in a new layer
+      var gl = new GraphicsLayer();
+      var p = new Point(-112, 35);
+      var s = new SimpleMarkerSymbol();
+      s.setSize(30);
+      s.setColor(new Color([255, 255, 0, 0.5]));
+      var g = new Graphic(p, s);
+      gl.add(g);      
+
+      p = new Point(-105, 36);
+      s = new SimpleMarkerSymbol();
+      s.setSize(30);
+      s.setColor(new Color([0, 255, 255, 0.75]));
+      g = new Graphic(p, s);
+      gl.add(g);
+
+      p = new Point(-115, 31);
+      s = new SimpleMarkerSymbol();
+      s.setSize(30);
+      s.setColor(new Color([110, 205, 255, 0.75]));
+      g = new Graphic(p, s);
+      gl.add(g);
+
+      p = new Point(-113, 33);
+      s = new SimpleMarkerSymbol();
+      s.setSize(30);
+      s.setColor(new Color([0, 100, 255, 0.75]));
+      g = new Graphic(p, s);
+      gl.add(g);
+      
+      map.addLayer(gl);
     });
   });
 </script>
