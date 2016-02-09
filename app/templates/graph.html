@@ -2,10 +2,7 @@
 <div id="pieChart" class="graph-box"></div>
 <div id="scatterChart" class="graph-box"></div>
 <div id="lineChart" class="graph-box"></div>
-<!-- <div id="stackedBarChart" class="col-sm-4"></div>
-<div id="pieChart" class="col-sm-4"></div>
-<div id="scatterChart" class="col-sm-4"></div>
-<div id="lineChart" class="col-sm-4"></div> -->
+
 
 <script type="text/javascript">
   // Placeholder charts
@@ -13,7 +10,8 @@
     bindto: '#stackedBarChart',
     data: {
         columns: [
-            ['{{ name }}', -30, 200, 200, 400, -150, 250],
+            // ['{{ name }}', -30, 200, 200, 400, -150, 250],
+            ['data1', -30, 200, 200, 400, -150, 250],
             ['data2', 130, 100, -100, 200, -150, 50],
             ['data3', -230, 200, 200, -300, 250, 250]
         ],
@@ -36,11 +34,7 @@
   var chart = c3.generate({
     bindto: '#pieChart',
     data: {
-        // iris data from R
-        columns: [
-            ['data1', 30],
-            ['data2', 120],
-        ],
+        columns: {{bar_chart|safe}},
         type : 'pie',
         onclick: function (d, i) { console.log("onclick", d, i); },
         onmouseover: function (d, i) { console.log("onmouseover", d, i); },
