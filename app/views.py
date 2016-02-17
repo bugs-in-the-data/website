@@ -9,9 +9,12 @@ def index(request):
 	template = loader.get_template('index.html')
 
 	subsample = SubsampleModel()
+	site = SiteModel()
 
 	data = {
-		'bar_chart' : subsample.getData(),
+		'pie_chart' : subsample.getPieChartData(),
 	}
+
+	test = subsample.getStackedBarChartData()
 
 	return HttpResponse(template.render(data, request))

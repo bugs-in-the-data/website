@@ -12,3 +12,4 @@ lib64
 .*swp
 *.cnf
 local_settings.py
+*.sql

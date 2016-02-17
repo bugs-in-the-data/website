@@ -34,7 +34,7 @@
   var chart = c3.generate({
     bindto: '#pieChart',
     data: {
-        columns: {{bar_chart|safe}},
+        columns: {{pie_chart|safe}},
         type : 'pie',
         onclick: function (d, i) { console.log("onclick", d, i); },
         onmouseover: function (d, i) { console.log("onmouseover", d, i); },

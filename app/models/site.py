@@ -8,3 +8,7 @@ class SiteModel(models.Model):
     installation = models.CharField(max_length=250, null=True)
     drainage = models.CharField(max_length=250, null=True)
     mountain_range = models.CharField(max_length=250, null=True)
+
+    def getSites():
+        uniqueOrders = SiteModel.objects.values('name')
+        return uniqueOrders
