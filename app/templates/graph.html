@@ -3,7 +3,6 @@
 <div id="scatterChart" class="graph-box"></div>
 <div id="lineChart" class="graph-box"></div>
 
-
 <script type="text/javascript">
   // Placeholder charts
   var chart = c3.generate({
@@ -12,9 +11,13 @@
         x: 'x',
         columns: {{bar_chart|safe}},
         type: 'bar',
-        groups: [
-            ['data1', 'data2']
-        ]
+        groups: [[
+          {% for d in bar_chart %}
+            {% if d.0 != 'x' %}
+              '{{d.0}}',
+            {% endif %}
+          {% endfor %}
+        ]],
     },
     axis: {
       x: {

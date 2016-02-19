@@ -44,17 +44,29 @@ class SubsampleModel(models.Model):
 
             temp[order][site] = count
         sites = sorted(sites)
+
+        # label the x-axis for printing into c3
         sites.insert(0, 'x'.encode("utf-8"))
+
+        ## @NOTE: this needs to be removed to see the full set of data,
+        ## bc this is purely for presentation purposes.
+        count = 0
 
         data = []
         data.append(sites)
         for key, val in temp.iteritems():
+            count = 0
             row = [key]
             for site in sites:
+                if count == 10:
+                    continue
+
                 if site in temp[key]:
                     row.append(temp[key][site])
                 else:
                     row.append(0)
+
+                count = count + 1
             data.append(row)
 
         return data
