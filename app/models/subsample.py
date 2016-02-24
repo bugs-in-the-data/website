@@ -25,6 +25,52 @@ class SubsampleModel(models.Model):
             data.append([u["order_name"].encode("utf-8"), u["order_count"]])
         return data
 
+    def getLineChartData(self):
+        ## @TODO: the query needs to mimic
+        ## SELECT y.date, x.order_name, COUNT(x.order_name) as order_count
+        ## FROM app_subsamplemodel x
+        ## LEFT JOIN app_samplemodel y on x.sample_id = y.id
+        ## GROUP BY CONCAT(y.date,x.order_name);
+        ordersByDate = SubsampleModel.objects.select_related('sample').values('sample__date', 'order_name').annotate(order_count=Count('order_name'))
+
+        seen = []
+        orders = []
+        temp = {}
+        for o in ordersByDate:
+            date = o["sample__date"].strftime("%m-%d-%Y")
+            order = o["order_name"].encode("utf-8")
+            count = o["order_count"]
+
+            if date not in seen:
+                seen.append(date)
+            if order not in orders:
+                orders.append(order)
+                temp[order] = {}
+
+            temp[order][date] = count
+
+        seen = sorted(seen)
+
+        # label the x-axis for printing into c3
+        seen.insert(0, 'x'.encode("utf-8"))
+
+        data = []
+        data.append(seen)
+
+        for key, val in temp.iteritems():
+            row = [key]
+            for s in seen:
+                if s in val:
+                    row.append(temp[key][s])
+                else:
+                    row.append(0)
+            data.append(row)
+
+        # print temp
+        # print data
+        # print data
+        return data
+
     def getStackedBarChartData(self):
         ordersBySite = SubsampleModel.objects.select_related('sample__site').values('sample__site__name', 'order_name').annotate(order_count=Count('order_name'))
 
@@ -43,13 +89,15 @@ class SubsampleModel(models.Model):
                 sites.append(site)
 
             temp[order][site] = count
+
         sites = sorted(sites)
 
         # label the x-axis for printing into c3
         sites.insert(0, 'x'.encode("utf-8"))
 
         ## @NOTE: this needs to be removed to see the full set of data,
-        ## bc this is purely for presentation purposes.
+        ## bc this is purely for presentation purposes. when it's done
+        ## correctly, we won't need any kind of 'count' variable.
         count = 0
 
         data = []
