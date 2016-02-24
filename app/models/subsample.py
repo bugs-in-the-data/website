@@ -66,9 +66,6 @@ class SubsampleModel(models.Model):
                     row.append(0)
             data.append(row)
 
-        # print temp
-        # print data
-        # print data
         return data
 
     def getStackedBarChartData(self):
