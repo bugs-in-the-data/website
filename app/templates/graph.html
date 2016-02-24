@@ -1,8 +1,7 @@
 <div id="stackedBarChart" class="graph-box"></div>
 <div id="pieChart" class="graph-box"></div>
-<div id="scatterChart" class="graph-box"></div>
 <div id="lineChart" class="graph-box"></div>
-
+<div id="scatterChart" class="graph-box"></div>
 
 <script type="text/javascript">
   // Placeholder charts
@@ -12,9 +11,13 @@
         x: 'x',
         columns: {{bar_chart|safe}},
         type: 'bar',
-        groups: [
-            ['data1', 'data2']
-        ]
+        groups: [[
+          {% for d in bar_chart %}
+            {% if d.0 != 'x' %}
+              '{{d.0}}',
+            {% endif %}
+          {% endfor %}
+        ]],
     },
     axis: {
       x: {
@@ -84,11 +87,16 @@
     bindto: "#lineChart",
     data: {
         x: 'x',
-        columns: [
-            ['x', 30, 50, 100, 230, 300, 310],
-            ['data1', 30, 200, 100, 400, 150, 250],
-            ['data2', 130, 300, 200, 300, 250, 450]
-        ]
-    }
+        xFormat: '%m-%d-%Y',
+        columns : {{line_chart|safe}},
+    },
+    axis: {
+      x: {
+        type: 'timeseries',
+        tick: {
+          format: '%Y'
+        }
+      }
+    },
   });
 </script>

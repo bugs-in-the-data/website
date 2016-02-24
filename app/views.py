@@ -13,8 +13,9 @@ def index(request):
 	site = SiteModel()
 
 	data = {
-		'pie_chart' : subsample.getPieChartData(),
-		'bar_chart' : subsample.getStackedBarChartData(),
+		'pie_chart'  : subsample.getPieChartData(),
+		'bar_chart'  : subsample.getStackedBarChartData(),
+		'line_chart' : subsample.getLineChartData(),
 	}
 
 	test = subsample.getStackedBarChartData()
