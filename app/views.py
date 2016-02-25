@@ -14,10 +14,12 @@ def index(request):
 	print subsample.getTaxaTree()
 
 	data = {
-		'pie_chart' : subsample.getPieChartData(),
 		'site_names' : site.getSiteNames(),
 		'sites_tree' : site.getSitesTree(),
 		'taxa_tree' : subsample.getTaxaTree(),
+		'pie_chart'  : subsample.getPieChartData(),
+		'bar_chart'  : subsample.getStackedBarChartData(),
+		'line_chart' : subsample.getLineChartData(),
 	}
 
 	# test = subsample.getStackedBarChartData()
