@@ -13,14 +13,18 @@ def index(request):
 	subsample = SubsampleModel()
 	site = SiteModel()
 	sample = SampleModel()
+	print subsample.getTaxaTree()
 
 	data = {
+		'site_names' : site.getSiteNames(),
+		'sites_tree' : site.getSitesTree(),
+		'taxa_tree' : subsample.getTaxaTree(),
 		'pie_chart'  : subsample.getPieChartData(),
 		'bar_chart'  : subsample.getStackedBarChartData(),
 		'line_chart' : subsample.getLineChartData(),
         'samples'   : sample.getAllSamples(),
 	}
 
-	test = subsample.getStackedBarChartData()
+	# test = subsample.getStackedBarChartData()
 
 	return HttpResponse(template.render(data, request))
