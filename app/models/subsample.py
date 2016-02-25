@@ -36,3 +36,25 @@ class SubsampleModel(models.Model):
             # print o["order_name"].encode("utf-8")
 
         return data
+
+    def getTaxaTree(self):
+        entries = SubsampleModel.objects.values('order_name', 'family', 'genus', 'species')[:100]
+
+        taxa_tree = {}
+        for entry in entries:
+            taxa_tree[_get_field(entry, 'order_name')] = {}
+
+        for entry in entries:
+            taxa_tree[_get_field(entry, 'order_name')][_get_field(entry, 'family')] = {}
+
+        for entry in entries:
+            taxa_tree[_get_field(entry, 'order_name')][_get_field(entry, 'family')][_get_field(entry, 'genus')] = []
+
+        for entry in entries:
+            taxa_tree[_get_field(entry, 'order_name')][_get_field(entry, 'family')][_get_field(entry, 'genus')].append(_get_field(entry, 'species'))
+
+
+        return taxa_tree
+
+def _get_field(entry, field):
+    return entry[field].encode('utf-8')

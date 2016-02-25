@@ -9,6 +9,21 @@ class SiteModel(models.Model):
     drainage = models.CharField(max_length=250, null=True)
     mountain_range = models.CharField(max_length=250, null=True)
 
-    def getSites():
-        uniqueOrders = SiteModel.objects.values('name')
-        return uniqueOrders
+    def getSiteNames(self):
+        sites = SiteModel.objects.values('name')
+        
+        unique_names = [site['name'].encode('utf-8') for site in sites]
+
+
+        # unique_names = 'blah'
+        return unique_names
+
+    def getSitesTree(self):
+    	sites = SiteModel.objects.values('name', 'drainage')
+
+    	sitesTree = {site['drainage'].encode('utf-8'): [] for site in sites}
+
+    	for site in sites:
+    		sitesTree[site['drainage'].encode('utf-8')].append(site['name'].encode('utf-8'))
+
+    	return sitesTree
