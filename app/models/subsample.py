@@ -30,8 +30,8 @@ class SubsampleModel(models.Model):
         ordersBySite = SubsampleModel.objects.select_related('sample__site').values('sample__site__name', 'order_name').annotate(order_count=Count('order_name'))
 
         ## NOTE: debugging
-        for o in ordersBySite:
-            print o
+        #for o in ordersBySite:
+            #print o
             # print(o.sample.site.name)
             # print o["order_name"].encode("utf-8")
 

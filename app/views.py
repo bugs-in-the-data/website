@@ -3,6 +3,8 @@ from django.http import HttpResponse
 from django.template import loader
 from django.core import serializers
 from app.models import SubsampleModel
+from app.models import SiteModel
+from app.models import SampleModel
 
 # Create your views here.
 def index(request):
@@ -10,9 +12,11 @@ def index(request):
 
 	subsample = SubsampleModel()
 	site = SiteModel()
+	sample = SampleModel()
 
 	data = {
 		'pie_chart' : subsample.getPieChartData(),
+        'samples'   : sample.getAllSamples(),
 	}
 
 	test = subsample.getStackedBarChartData()
