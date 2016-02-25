@@ -1,7 +1,7 @@
 <link rel="stylesheet" href="https://js.arcgis.com/3.15/esri/css/esri.css">
 <script src="https://js.arcgis.com/3.15/"></script>
-
 <script>
+  var samples = {{samples|safe}};
   var map;
   require([
         "esri/map", 
@@ -21,16 +21,30 @@
     });
 
     map.on("load", function() {
-      //Basic test points in a new layer
+      //Create and populate graphics layer
       var gl = new GraphicsLayer();
-      var p = new Point(-112, 35);
+      var p;
+      var s;
+      var g;
+      for(i = 0; i < samples.length; i++)
+      {
+        p = new Point(parseFloat(samples[i][2]), parseFloat(samples[i][1]));
+        s = new SimpleMarkerSymbol();
+        s.setSize(10);
+        s.setColor(new Color([255, 0, 0, 0.5]));
+        g = new Graphic(p, s);
+        gl.add(g);
+      }
+      
+      /*var p = new Point(-112, 35);
       var s = new SimpleMarkerSymbol();
       s.setSize(30);
       s.setColor(new Color([255, 255, 0, 0.5]));
       var g = new Graphic(p, s);
       gl.add(g);      
 
-      p = new Point(-105, 36);
+      p = new Point(parseFloat(samples[0][2]), parseFloat(samples[0][1]));
+      console.log(p);
       s = new SimpleMarkerSymbol();
       s.setSize(30);
       s.setColor(new Color([0, 255, 255, 0.75]));
@@ -49,7 +63,7 @@
       s.setSize(30);
       s.setColor(new Color([0, 100, 255, 0.75]));
       g = new Graphic(p, s);
-      gl.add(g);
+      gl.add(g);*/
       
       map.addLayer(gl);
     });

@@ -14,3 +14,20 @@ class SampleModel(models.Model):
     zone = models.CharField(max_length=250, null=True)
     utm_easting = models.CharField(max_length=250, null=True)
     utm_northing = models.CharField(max_length=250, null=True)
+    latitude = models.CharField(max_length=250, null=True)
+    longitude = models.CharField(max_length=250, null=True)
+	
+    def getAllSamples(self):
+        data = []
+        samples = SampleModel.objects.values('sample_name', 'latitude', 'longitude')
+
+        for s in samples:
+            if s["latitude"] == None or s["longitude"] == None:
+                continue
+            name = s["sample_name"].encode("utf-8")
+            lat = s["latitude"].encode("utf-8")
+            long = s["longitude"].encode("utf-8")
+            
+            data.append([name, lat, long])
+        
+        return data

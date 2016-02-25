@@ -4,6 +4,7 @@ from django.template import loader
 from django.core import serializers
 from app.models import SubsampleModel
 from app.models import SiteModel
+from app.models import SampleModel
 
 # Create your views here.
 def index(request):
@@ -11,6 +12,7 @@ def index(request):
 
 	subsample = SubsampleModel()
 	site = SiteModel()
+	sample = SampleModel()
 	print subsample.getTaxaTree()
 
 	data = {
@@ -20,6 +22,7 @@ def index(request):
 		'pie_chart'  : subsample.getPieChartData(),
 		'bar_chart'  : subsample.getStackedBarChartData(),
 		'line_chart' : subsample.getLineChartData(),
+        'samples'   : sample.getAllSamples(),
 	}
 
 	# test = subsample.getStackedBarChartData()
