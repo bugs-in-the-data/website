@@ -15,7 +15,9 @@ def index(request):
 	sample = SampleModel()
 
 	data = {
-		'pie_chart' : subsample.getPieChartData(),
+		'pie_chart'  : subsample.getPieChartData(),
+		'bar_chart'  : subsample.getStackedBarChartData(),
+		'line_chart' : subsample.getLineChartData(),
         'samples'   : sample.getAllSamples(),
 	}
 
