@@ -49,6 +49,7 @@
       <div class="col-sm-6">
         <div style="overflow: hidden;">
           <!-- <div style="height: 50%; overflow: auto;"> -->
+            {% csrf_token %}
             <div class="panel panel-default">
               <div class="panel-heading">
                 <!-- <h3 class="panel-title">Filter</h3> -->
@@ -62,7 +63,6 @@
             </div>
           <!-- </div> -->
         </div>
-
       </div>
     </div>
     <div class="row">
