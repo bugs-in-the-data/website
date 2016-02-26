@@ -18,7 +18,7 @@ def index(request):
 
 	if request.POST:
 		filter_object = filterHelper.handleFilterPostData(request.POST)
-		print filter_object
+		# print filter_object
 
 	data = {
 		'site_names' : site.getSiteNames(),
