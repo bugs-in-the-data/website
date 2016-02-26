@@ -13,16 +13,16 @@
 		<li id="Insecta"> Insecta
 		<ul>
 		{% for order, families in taxa_tree.items %}
-			<li id="{{ order|safe }}" class="selected folder">{{ order|safe }}
+			<li id="{{ order|safe }}" class="">{{ order|safe }}
 			<ul>
 			{% for family, genuses in families.items %}
-				<li id="{{ family|safe }}" class="selected">{{ family|safe }}
+				<li id="{{ family|safe }}" class="">{{ family|safe }}
 				<ul>
 				{% for genus, specieses in genuses.items %}
-					<li id="{{ genus|safe }}" class="selected">{{ genus|safe }}
+					<li id="{{ genus|safe }}" class="">{{ genus|safe }}
 					<ul>
 					{% for species in specieses %}
-						<li id="{{ species|safe }}" class="selected">{{ species|safe }}
+						<li id="{{ species|safe }}" class="">{{ species|safe }}
 					{% endfor %}
 					</ul>
 
@@ -39,10 +39,10 @@
 <div id="site-tree">
 	<ul id="treeData" style="display: none;">
 	{% for drainage, sites in sites_tree.items %}
-		<li id="{{ drainage|safe }}" class="selected folder">{{ drainage|safe }}
+		<li id="{{ drainage|safe }}" class="folder">{{ drainage|safe }}
 		<ul>
 		{% for site in sites %}
-			<li id="{{ site|safe }}" class="selected">{{ site|safe }}
+			<li id="{{ site|safe }}" class="">{{ site|safe }}
 		{% endfor %}
 		</ul>
 	{% endfor %}
@@ -61,19 +61,21 @@ $('#date-container .input-daterange').datepicker({
 $(function(){
 	$("#taxa-tree").fancytree({
 		checkbox: true, // gives nodes checkboxes
-		selectMode: 3, // option 3 selects or deselects all children
+		selectMode: 1, // option 3 selects or deselects all children
 		icon: false, // gets rid of ugly icons
 	});
-
+	var node = $("#taxa-tree").fancytree("getRootNode");
+	node.sortChildren(null, true);
 });
 
 $(function(){
 	$("#site-tree").fancytree({
 		checkbox: true, // gives nodes checkboxes
-		selectMode: 3, // option 3 selects or deselects all children
+		selectMode: 1, // option 3 selects or deselects all children
 		icon: false, // gets rid of ugly icons
 	});
-
+	var node = $("#taxa-tree").fancytree("getRootNode");
+	node.sortChildren(null, true);
 });
 
 </script>

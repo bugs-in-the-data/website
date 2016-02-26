@@ -13,7 +13,8 @@ def index(request):
 	subsample = SubsampleModel()
 	site = SiteModel()
 	sample = SampleModel()
-	print subsample.getTaxaTree()
+
+	# data_filter = handleDataFilter(post)
 
 	data = {
 		'site_names' : site.getSiteNames(),
