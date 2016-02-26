@@ -52,16 +52,14 @@
             <div class="panel panel-default">
                 {% csrf_token %}
                 <div class="panel-heading">
-                  <div class="row">
-                    <div class="col-sm-offset-9 col-lg-offset-10">
-                      <button class="btn btn-primary" type="submit">Filter</button>                       
-                    </div>
-                  </div>
+                  <h3 class="panel-title">Filter</h3>
                 </div>
                 <div class="panel-body">
+                  
                   <div style="height: 40%; overflow: auto;">
                     {% include 'filter.html' %}
                   </div>
+                  <button class="btn btn-primary" type="submit">Filter</button>
                 </div>
             </div>
           </form>

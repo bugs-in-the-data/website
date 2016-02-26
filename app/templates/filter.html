@@ -8,9 +8,10 @@
 </div>
 
 <h4>Select By Taxa</h4>
-<div id="taxa-tree">
+<div id="taxa-tree" class="fancytree-radio">
 	<ul id="treeData" style="display: none;">
-		<li id="Insecta"> Insecta
+		<!-- <input type="radio" value="Insecta"> -->
+		<li id="Insecta" class="selected"> Insecta
 		<ul>
 		{% for order, families in taxa_tree.items %}
 			<li id="{{ order|safe }}" class="">{{ order|safe }}
@@ -22,7 +23,7 @@
 					<li id="{{ genus|safe }}" class="">{{ genus|safe }}
 					<ul>
 					{% for species in specieses %}
-						<li id="{{ species|safe }}" class="">{{ species|safe }}
+						<li id="{{ species|safe }}" class="">{{ genus|safe }} {{ species|safe }}
 					{% endfor %}
 					</ul>
 
@@ -35,23 +36,33 @@
 	</ul>
 </div>
 
-<h4>Select By Site</h4>
-<div id="site-tree">
+<h4>Select By Location</h4>
+<div id="site-tree" class="fancytree-radio">
 	<ul id="treeData" style="display: none;">
-	{% for drainage, sites in sites_tree.items %}
-		<li id="{{ drainage|safe }}" class="folder">{{ drainage|safe }}
+		<li id="ALL" class="selected"> All Locations
 		<ul>
-		{% for site in sites %}
-			<li id="{{ site|safe }}" class="">{{ site|safe }}
+		{% for base, drainages in sites_tree.items %}
+			<li id="{{ base|safe }}" class="">{{ base|safe }}
+			<ul>
+			{% for drainage, sites in drainages.items %}
+				<li id="{{ drainage|safe }}" class="">{{ drainage|safe }}
+				<ul>
+				{% for site, samples in sites.items %}
+					<li id="{{ site|safe }}" class="">{{ site|safe }}
+					<ul>
+					{% for sample in samples %}
+						<li id="{{ sample|safe }}" class="">{{ sample|safe }}
+					{% endfor %}
+					</ul>
+
+				{% endfor %}
+				</ul>
+			{% endfor %}
+			</ul>
 		{% endfor %}
 		</ul>
-	{% endfor %}
 	</ul>
 </div>
-
-
-
-
 
 <script type="text/javascript">
 
@@ -66,16 +77,31 @@ $(function(){
 	});
 	var node = $("#taxa-tree").fancytree("getRootNode");
 	node.sortChildren(null, true);
-});
 
-$(function(){
-	$("#site-tree").fancytree({
+    $("#site-tree").fancytree({
 		checkbox: true, // gives nodes checkboxes
 		selectMode: 1, // option 3 selects or deselects all children
 		icon: false, // gets rid of ugly icons
 	});
 	var node = $("#taxa-tree").fancytree("getRootNode");
 	node.sortChildren(null, true);
+
+	$("form").submit(function() {
+      // Render hidden <input> elements for active and selected nodes
+      $("#taxa-tree").fancytree("getTree").generateFormElements();
+      $("#site-tree").fancytree("getTree").generateFormElements();
+      return true;
+    });
 });
+
+// $(function(){
+// 	$("#site-tree").fancytree({
+// 		checkbox: true, // gives nodes checkboxes
+// 		selectMode: 1, // option 3 selects or deselects all children
+// 		icon: false, // gets rid of ugly icons
+// 	});
+// 	var node = $("#taxa-tree").fancytree("getRootNode");
+// 	node.sortChildren(null, true);
+// });
 
 </script>

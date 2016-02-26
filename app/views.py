@@ -22,7 +22,7 @@ def index(request):
 
 	data = {
 		'site_names' : site.getSiteNames(),
-		'sites_tree' : site.getSitesTree(),
+		'sites_tree' : sample.getSitesTree(),
 		'taxa_tree' : subsample.getTaxaTree(),
 		'pie_chart'  : subsample.getPieChartData(),
 		'bar_chart'  : subsample.getStackedBarChartData(),
