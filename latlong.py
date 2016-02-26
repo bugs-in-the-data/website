@@ -58,19 +58,19 @@ def utmToLatLng(zone, easting, northing, northernHemisphere=True):
     longitude = ((zone > 0) and (6 * zone - 183.0) or 3.0) - _a3
 
     return (latitude, longitude)
-    
+
 def main():
     conn = MySQLdb.connect(
         host = "localhost",
         user = "root",
-        passwd = "Ty3Jasper!",
+        passwd = "Temp123",
         db = "bugdata"
     )
-    
+
     x = conn.cursor()
-    
+
     x.execute("SELECT id, utm_easting, utm_northing, zone FROM app_samplemodel")
-    
+
     samples = x.fetchall()
 
     for sample in samples:
@@ -81,7 +81,7 @@ def main():
         if utm_easting == "NULL" or utm_northing == "NULL" or zone == "NULL":
             continue
         (lat, long) = utmToLatLng(zone, utm_easting, utm_northing)
-        
+
         try:
             query = "UPDATE app_samplemodel SET latitude = \""+str(lat)+"\", longitude = \""+str(long)+"\" WHERE id = "+str(sample_id)
             print query
@@ -90,6 +90,6 @@ def main():
         except MySQLdb.Error, e:
             print e
             conn.rollback()
-        
+
 if __name__ == '__main__':
     main()
