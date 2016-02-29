@@ -11,19 +11,19 @@
 <div id="taxa-tree" class="fancytree-radio">
 	<ul id="treeData" style="display: none;">
 		<!-- <input type="radio" value="Insecta"> -->
-		<li id="Insecta" class="selected"> Insecta
+		<li id="order_name=NONE;family=NONE;genus=NONE;species=NONE" class="{% if lowest_levels.taxa == 'Insecta' %}selected{% else %}expanded{% endif %}" > Insecta
 		<ul>
 		{% for order, families in taxa_tree.items %}
-			<li id="{{ order|safe }}" class="">{{ order|safe }}
+			<li id="order_name={{order|safe}};family=NONE;genus=NONE;species=NONE" class="{% if filter_object.taxa.order_name == order %}{% if lowest_levels.taxa == order %}selected{% else %}expanded{% endif %}{% endif %}">{{ order|safe }}
 			<ul>
 			{% for family, genuses in families.items %}
-				<li id="{{ family|safe }}" class="">{{ family|safe }}
+				<li id="order_name={{order|safe}};family={{family|safe}};genus=NONE;species=NONE" class="{% if filter_object.taxa.family == family %}{% if lowest_levels.taxa == family %}selected{% else %}expanded{% endif %}{% endif %}">{{ family|safe }}
 				<ul>
 				{% for genus, specieses in genuses.items %}
-					<li id="{{ genus|safe }}" class="">{{ genus|safe }}
+					<li id="order_name={{order|safe}};family={{family|safe}};genus={{genus|safe}};species=NONE" class="{% if filter_object.taxa.genus == genus %}{% if lowest_levels.taxa == genus %}selected{% else %}expanded{% endif %}{% endif %}">{{ genus|safe }}
 					<ul>
 					{% for species in specieses %}
-						<li id="{{ species|safe }}" class="">{{ genus|safe }} {{ species|safe }}
+						<li id="order_name={{order|safe}};family={{family|safe}};genus={{genus|safe}};species={{species|safe}}" class="{% if filter_object.taxa.species == species %}{% endif %}">{{ genus|safe }} {{ species|safe }}
 					{% endfor %}
 					</ul>
 
@@ -39,19 +39,19 @@
 <h4>Select By Location</h4>
 <div id="site-tree" class="fancytree-radio">
 	<ul id="treeData" style="display: none;">
-		<li id="ALL" class="selected"> All Locations
+		<li id="state=NONE;drainage=NONE;name=NONE;sample_name=NONE" class="{% if lowest_levels.location == 'All Locations' %}selected{% else %}expanded{% endif %}"> All Locations
 		<ul>
 		{% for base, drainages in sites_tree.items %}
-			<li id="{{ base|safe }}" class="">{{ base|safe }}
+			<li id="state={{base|safe}};drainage=NONE;name=NONE;sample_name=NONE" class="{% if filter_object.location.state == base %}{% if lowest_levels.location == base %}selected{% else %}expanded{% endif %}{% endif %}">{{ base|safe }}
 			<ul>
 			{% for drainage, sites in drainages.items %}
-				<li id="{{ drainage|safe }}" class="">{{ drainage|safe }}
+				<li id="state={{base|safe}};drainage={{drainage|safe}};name=NONE;sample_name=NONE" class="{% if filter_object.location.drainage == drainage %}{% if lowest_levels.location == drainage %}selected{% else %}expanded{% endif %}{% endif %}">{{ drainage|safe }}
 				<ul>
 				{% for site, samples in sites.items %}
-					<li id="{{ site|safe }}" class="">{{ site|safe }}
+					<li id="state={{base|safe}};drainage={{drainage|safe}};name={{site|safe}};sample_name=NONE" class="{% if filter_object.location.name == site %}{% if lowest_levels.location == site %}selected{% else %}expanded{% endif %}{% endif %}">{{ site|safe }}
 					<ul>
 					{% for sample in samples %}
-						<li id="{{ sample|safe }}" class="">{{ sample|safe }}
+						<li id="state={{base|safe}};drainage={{drainage|safe}};name={{site|safe}};sample_name={{sample|safe}}" class="{% if filter_object.location.sample_name == sample %}selected{% endif %}">{{ sample|safe }}
 					{% endfor %}
 					</ul>
 
