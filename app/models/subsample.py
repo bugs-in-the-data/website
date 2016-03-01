@@ -117,7 +117,7 @@ class SubsampleModel(models.Model):
         return data
 
     def getTaxaTree(self):
-        entries = SubsampleModel.objects.values('order_name', 'family', 'genus', 'species')[:100]
+        entries = SubsampleModel.objects.values('order_name', 'family', 'genus', 'species')
 
         taxa_tree = {}
         for entry in entries:

@@ -48,20 +48,21 @@
 
       <div class="col-sm-6">
         <div style="overflow: hidden;">
-          <!-- <div style="height: 50%; overflow: auto;"> -->
-            {% csrf_token %}
+          <form method="post" action="/app/">
             <div class="panel panel-default">
-              <div class="panel-heading">
-                <!-- <h3 class="panel-title">Filter</h3> -->
-                <button class="btn btn-primary" type="submit">Filter</button>
-              </div>
-              <div class="panel-body">
-                <div style="height: 40%; overflow: auto;">
-                  {% include 'filter.html' %}
+                {% csrf_token %}
+                <div class="panel-heading">
+                  <h3 class="panel-title">Filter</h3>
                 </div>
-              </div>
+                <div class="panel-body">
+                  
+                  <div style="height: 40%; overflow: auto;">
+                    {% include 'filter.html' %}
+                  </div>
+                  <button class="btn btn-primary" type="submit">Filter</button>
+                </div>
             </div>
-          <!-- </div> -->
+          </form>
         </div>
       </div>
     </div>

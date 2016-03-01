@@ -63,7 +63,8 @@ def main():
     conn = MySQLdb.connect(
         host = "localhost",
         user = "root",
-        passwd = "Temp123",
+        passwd = "",
+        passwd = "",
         db = "bugdata"
     )
 
