@@ -1,9 +1,23 @@
-<div id="date-container">
-	<h4>Select By Date Range</h4>
-	<div class="input-daterange input-group" id="datepicker">
-	    <input type="text" class="input-sm form-control" name="start" />
-	    <span class="input-group-addon">to</span>
-	    <input type="text" class="input-sm form-control" name="end" />
+<h4>Select By Time</h4>
+<div class="col-sm-6">
+	<div id="date-container">
+		<h5>Select By Date Range</h5>
+		<div class="input-daterange input-group" id="datepicker">
+		    <input type="text" class="input-sm form-control" name="start" value="{{filter_object.date.start}}" />
+		    <span class="input-group-addon">to</span>
+		    <input type="text" class="input-sm form-control" name="end" value="{{filter_object.date.end}}" />
+		</div>
+	</div>
+</div>
+<div class="col-sm-6">
+	<div id="season-list" class="">
+		<h5>Select By Season</h5>
+		<ul id="treeData" style="display: none;">
+			<li id="Spring" class="{% if 'Spring' in filter_object.season %}selected{% endif %}"> Spring
+			<li id="Summer" class="{% if 'Summer' in filter_object.season %}selected{% endif %}"> Summer
+			<li id="Fall" class="{% if 'Fall' in filter_object.season %}selected{% endif %}"> Fall
+			<li id="Winter" class="{% if 'Winter' in filter_object.season %}selected{% endif %}"> Winter
+		</ul>
 	</div>
 </div>
 
@@ -70,24 +84,40 @@ $('#date-container .input-daterange').datepicker({
 });
 
 $(function(){
+	$("#season-list").fancytree({
+		checkbox: true, // gives nodes checkboxes
+		selectMode: 3, 
+		icon: false, // gets rid of ugly icons
+		// Because there is > 1 tree on this page
+		cookieId: "fancytree-season",
+      	idPrefix: "fancytree-season-",
+	});
+
 	$("#taxa-tree").fancytree({
 		checkbox: true, // gives nodes checkboxes
-		selectMode: 1, // option 3 selects or deselects all children
+		selectMode: 1, 
 		icon: false, // gets rid of ugly icons
+		// Because there is > 1 tree on this page
+		cookieId: "fancytree-taxa",
+      	idPrefix: "fancytree-taxa-",
 	});
 	var node = $("#taxa-tree").fancytree("getRootNode");
 	node.sortChildren(null, true);
 
     $("#site-tree").fancytree({
 		checkbox: true, // gives nodes checkboxes
-		selectMode: 1, // option 3 selects or deselects all children
+		selectMode: 1, 
 		icon: false, // gets rid of ugly icons
+		// Because there is > 1 tree on this page
+		cookieId: "fancytree-site",
+      	idPrefix: "fancytree-site-",
 	});
 	var node = $("#taxa-tree").fancytree("getRootNode");
 	node.sortChildren(null, true);
 
 	$("form").submit(function() {
       // Render hidden <input> elements for active and selected nodes
+      $("#season-list").fancytree("getTree").generateFormElements();
       $("#taxa-tree").fancytree("getTree").generateFormElements();
       $("#site-tree").fancytree("getTree").generateFormElements();
       return true;

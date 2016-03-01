@@ -14,24 +14,29 @@ class FilterHelperModel():
                 'sample_name': 'NONE',
             },
             'date': {
-                'start': 'NONE',
-                'end': 'NONE',
+                'start': '01/01/2009',
+                'end': '01/01/2014',
             },
-            'season': {
-                'spring': True,
-                'summer': True,
-                'fall': True,
-                'winter': True,
-            },
+            'season': [
+                'Spring',
+                'Summer',
+                'Fall',
+                'Winter',
+            ],
         }
 
     def handleFilterPostData(self, post):
         # take post data, format and create a filter object
-        for level in post['ft_1[]'].split(';'):
+        self.filters['date']['start'] = post.get('start')
+        self.filters['date']['end'] = post.get('end')
+
+        self.filters['season'] = post.getlist('ft_1[]')
+
+        for level in post['ft_2[]'].split(';'):
             key, value = level.split('=')
             self.filters['taxa'][key] = value
 
-        for level in post['ft_2[]'].split(';'):
+        for level in post['ft_3[]'].split(';'):
             key, value = level.split('=')
             self.filters['location'][key] = value
         
