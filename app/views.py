@@ -37,7 +37,7 @@ def index(request):
         'pie_chart'  : subsample.getPieChartData(),
         'bar_chart'  : subsample.getStackedBarChartData(filterHelper),
         'line_chart' : subsample.getLineChartData(),
-        'samples'   : sample.getAllSamples(),
+        'samples'   : sample.getAllSamples(filterHelper),
         'filter_object' : filter_object,
         'lowest_levels' : lowest_levels,
     }

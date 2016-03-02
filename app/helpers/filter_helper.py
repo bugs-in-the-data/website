@@ -77,7 +77,17 @@ class FilterHelperModel():
         return query
 
     def refineSampleQuery(self, query):
-
+        if self.filters['location']['sample_name'] != 'NONE':
+            query = query.filter(sample_name=self.filters['location']['sample_name'])
+        elif self.filters['location']['name'] != 'NONE':
+            query = query.filter(site__name=self.filters['location']['name'])
+        elif self.filters['location']['drainage'] != 'NONE':
+            query = query.filter(site__drainage=self.filters['location']['drainage'])
+        elif self.filters['location']['state'] != 'NONE':
+            query = query.filter(site__state=self.filters['location']['state'])
+        else:
+            pass
+        
         return query
 
     def getLowestLevels(self):

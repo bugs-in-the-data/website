@@ -17,9 +17,10 @@ class SampleModel(models.Model):
     latitude = models.CharField(max_length=250, null=True)
     longitude = models.CharField(max_length=250, null=True)
 	
-    def getAllSamples(self):
+    def getAllSamples(self, filterHelper):
         data = []
         samples = SampleModel.objects.values('sample_name', 'latitude', 'longitude')
+        samples = filterHelper.refineSampleQuery(samples)
 
         for s in samples:
             if s["latitude"] == None or s["longitude"] == None:
