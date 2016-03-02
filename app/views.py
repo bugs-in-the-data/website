@@ -26,7 +26,9 @@ def index(request):
 
     if request.POST:
         filter_object = filterHelper.handleFilterPostData(request.POST)
-        print filterHelper.getFilterObject()
+        # print filterHelper.getFilterObject()
+
+    lowest_levels = filterHelper.getLowestLevels()
 
     data = {
         'site_names' : site.getSiteNames(),
@@ -37,7 +39,7 @@ def index(request):
         'line_chart' : subsample.getLineChartData(),
         'samples'   : sample.getAllSamples(),
         'filter_object' : filter_object,
-        'lowest_levels' : filterHelper.getLowestLevels(),
+        'lowest_levels' : lowest_levels,
     }
 
     # test = subsample.getStackedBarChartData()

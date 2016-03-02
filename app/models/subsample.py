@@ -52,9 +52,6 @@ class SubsampleModel(models.Model):
 
         seen = sorted(seen)
 
-        # label the x-axis for printing into c3
-        seen.insert(0, 'x'.encode("utf-8"))
-
         data = []
         data.append(seen)
 
@@ -67,35 +64,34 @@ class SubsampleModel(models.Model):
                     row.append(0)
             data.append(row)
 
+        # label the x-axis for printing into c3
+        seen.insert(0, 'x'.encode("utf-8"))
+
         return data
 
     def getStackedBarChartData(self, filterHelper):
-        ordersBySite = SubsampleModel.objects.select_related('sample__site').values('sample__site__name', 'order_name').annotate(order_count=Count('order_name'))
+        ordersBySite = SubsampleModel.objects.select_related('sample__site').values(filterHelper.getSubSampleSubLocation(), filterHelper.getSubTaxa()).annotate(order_count=Count('order_name'))
         ordersBySite = filterHelper.refineSubsampleQuery(ordersBySite)
 
-        ## @NOTE: previously working
-        # ordersBySite = SubsampleModel.objects.select_related('sample__site').values('sample__site__name', 'order_name').annotate(order_count=Count('order_name'))
-
         seen = []
-        sites = []
+        locations = []
         temp = {}
         for o in ordersBySite:
-            order = o["order_name"].encode("utf-8")
-            site = o["sample__site__name"].encode("utf-8")
+
+            label = o[filterHelper.getSubTaxa()].encode("utf-8")
+            loc = o[filterHelper.getSubSampleSubLocation()].encode("utf-8")
             count = o["order_count"]
 
-            if order not in seen:
-                seen.append(order)
-                temp[order] = {}
-            if site not in sites:
-                sites.append(site)
+            if label not in seen:
+                seen.append(label)
+                temp[label] = {}
+            if loc not in locations:
+                locations.append(loc)
 
-            temp[order][site] = count
+            temp[label][loc] = count
 
-        sites = sorted(sites)
+        locations = sorted(locations)
 
-        # label the x-axis for printing into c3
-        sites.insert(0, 'x'.encode("utf-8"))
 
         ## @NOTE: this needs to be removed to see the full set of data,
         ## bc this is purely for presentation purposes. when it's done
@@ -103,21 +99,24 @@ class SubsampleModel(models.Model):
         count = 0
 
         data = []
-        data.append(sites)
+        data.append(locations)
         for key, val in temp.iteritems():
             count = 0
             row = [key]
-            for site in sites:
+            for loc in locations:
                 if count == 10:
                     continue
 
-                if site in temp[key]:
-                    row.append(temp[key][site])
+                if loc in temp[key]:
+                    row.append(temp[key][loc])
                 else:
                     row.append(0)
 
                 count = count + 1
             data.append(row)
+
+        # label the x-axis for printing into c3
+        locations.insert(0, 'x'.encode("utf-8"))
 
         return data
 

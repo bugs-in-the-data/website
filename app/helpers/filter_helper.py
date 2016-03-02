@@ -25,6 +25,15 @@ class FilterHelperModel():
             ],
         }
 
+    def getFilterObject(self):
+        return self.filters
+
+    def getSubSampleSubLocation(self):
+        return self.subSampleSubLocation
+
+    def getSubTaxa(self):
+        return self.subTaxa
+
     def handleFilterPostData(self, post):
         # take post data, format and create a filter object
         self.filters['date']['start'] = post.get('start')
@@ -40,9 +49,6 @@ class FilterHelperModel():
             key, value = level.split('=')
             self.filters['location'][key] = value
 
-        return self.filters
-
-    def getFilterObject(self):
         return self.filters
 
     def refineSubsampleQuery(self, query):
@@ -78,25 +84,40 @@ class FilterHelperModel():
         lowest = {}
 
         if self.filters['taxa']['order_name'] == 'NONE':
+            self.subTaxa = 'order_name'
             lowest['taxa'] = 'Insecta'
         elif self.filters['taxa']['family'] == 'NONE':
+            self.subTaxa = 'family'
             lowest['taxa'] = self.filters['taxa']['order_name']
         elif self.filters['taxa']['genus'] == 'NONE':
+            self.subTaxa = 'genus'
             lowest['taxa'] = self.filters['taxa']['family']
         elif self.filters['taxa']['species'] == 'NONE':
+            self.subTaxa = 'species'
             lowest['taxa'] = self.filters['taxa']['genus']
         else:
+            self.subTaxa = 'species'
             lowest['taxa'] = self.filters['taxa']['species']
 
         if self.filters['location']['state'] == 'NONE':
+            self.subSampleSubLocation = 'sample__site__state'
+            self.sampleSubLocation = 'site__state'
             lowest['location'] = 'All Locations'
         elif self.filters['location']['drainage'] == 'NONE':
+            self.sampleSubLocation = 'site__drainage'
+            self.subSampleSubLocation = 'sample__site__drainage'
             lowest['location'] = self.filters['location']['state']
         elif self.filters['location']['name'] == 'NONE':
+            self.sampleSubLocation = 'site__name'
+            self.subSampleSubLocation = 'sample__site__name'
             lowest['location'] = self.filters['location']['drainage']
         elif self.filters['location']['sample_name'] == 'NONE':
+            self.sampleSubLocation = 'sample_name'
+            self.subSampleSubLocation = 'sample__sample_name'
             lowest['location'] = self.filters['location']['name']
         else:
+            self.sampleSubLocation = 'sample_name'
+            self.subSampleSubLocation = 'sample__sample_name'
             lowest['location'] = self.filters['location']['sample_name']
 
         return lowest
