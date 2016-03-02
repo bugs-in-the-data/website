@@ -39,11 +39,40 @@ class FilterHelperModel():
         for level in post['ft_3[]'].split(';'):
             key, value = level.split('=')
             self.filters['location'][key] = value
-        
+
         return self.filters
 
     def getFilterObject(self):
         return self.filters
+
+    def refineSubsampleQuery(self, query):
+        if self.filters['taxa']['species'] != 'NONE':
+            query = query.filter(species=self.filters['taxa']['species'])
+        elif self.filters['taxa']['genus'] != 'NONE':
+            query = query.filter(genus=self.filters['taxa']['genus'])
+        elif self.filters['taxa']['family'] != 'NONE':
+            query = query.filter(family=self.filters['taxa']['family'])
+        elif self.filters['taxa']['order_name'] != 'NONE':
+            query = query.filter(order_name=self.filters['taxa']['order_name'])
+        else:
+            pass
+
+        if self.filters['location']['sample_name'] != 'NONE':
+            query = query.filter(sample__sample_name=self.filters['location']['sample_name'])
+        elif self.filters['location']['name'] != 'NONE':
+            query = query.filter(sample__site__name=self.filters['location']['name'])
+        elif self.filters['location']['drainage'] != 'NONE':
+            query = query.filter(sample__site__drainage=self.filters['location']['drainage'])
+        elif self.filters['location']['state'] != 'NONE':
+            query = query.filter(sample__site__state=self.filters['location']['state'])
+        else:
+            pass
+
+        return query
+
+    def refineSampleQuery(self, query):
+
+        return query
 
     def getLowestLevels(self):
         lowest = {}

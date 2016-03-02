@@ -6,6 +6,7 @@ from django.core import serializers
 from sample import SampleModel
 from pprint import pprint
 from collections import Counter
+from app.helpers import FilterHelperModel
 import json
 
 class SubsampleModel(models.Model):
@@ -26,7 +27,7 @@ class SubsampleModel(models.Model):
         return data
 
     def getLineChartData(self):
-        ## @TODO: the query needs to mimic
+        ## @NOTE: the query needs to mimic
         ## SELECT y.date, x.order_name, COUNT(x.order_name) as order_count
         ## FROM app_subsamplemodel x
         ## LEFT JOIN app_samplemodel y on x.sample_id = y.id
@@ -68,8 +69,12 @@ class SubsampleModel(models.Model):
 
         return data
 
-    def getStackedBarChartData(self):
+    def getStackedBarChartData(self, filterHelper):
         ordersBySite = SubsampleModel.objects.select_related('sample__site').values('sample__site__name', 'order_name').annotate(order_count=Count('order_name'))
+        ordersBySite = filterHelper.refineSubsampleQuery(ordersBySite)
+
+        ## @NOTE: previously working
+        # ordersBySite = SubsampleModel.objects.select_related('sample__site').values('sample__site__name', 'order_name').annotate(order_count=Count('order_name'))
 
         seen = []
         sites = []
