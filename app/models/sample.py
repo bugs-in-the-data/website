@@ -34,21 +34,21 @@ class SampleModel(models.Model):
         return data
 
     def getSitesTree(self):
-        # entries = SampleModel.objects.values('site__state', 'site__drainage', 'site__name', 'sample_name')
-        entries = SampleModel.objects.select_related('site').values('site__state', 'site__drainage', 'site__name', 'sample_name')
+        # entries = SampleModel.objects.values('site__installation', 'site__drainage', 'site__name', 'sample_name')
+        entries = SampleModel.objects.select_related('site').values('site__installation', 'site__drainage', 'site__name', 'sample_name')
 
         sites_tree = {}
         for entry in entries:
-            sites_tree[_get_field(entry, 'site__state')] = {}
+            sites_tree[_get_field(entry, 'site__installation')] = {}
 
         for entry in entries:
-            sites_tree[_get_field(entry, 'site__state')][_get_field(entry, 'site__drainage')] = {}
+            sites_tree[_get_field(entry, 'site__installation')][_get_field(entry, 'site__drainage')] = {}
 
         for entry in entries:
-            sites_tree[_get_field(entry, 'site__state')][_get_field(entry, 'site__drainage')][_get_field(entry, 'site__name')] = []
+            sites_tree[_get_field(entry, 'site__installation')][_get_field(entry, 'site__drainage')][_get_field(entry, 'site__name')] = []
 
         for entry in entries:
-            sites_tree[_get_field(entry, 'site__state')][_get_field(entry, 'site__drainage')][_get_field(entry, 'site__name')].append(_get_field(entry, 'sample_name'))
+            sites_tree[_get_field(entry, 'site__installation')][_get_field(entry, 'site__drainage')][_get_field(entry, 'site__name')].append(_get_field(entry, 'sample_name'))
 
         return sites_tree
 
