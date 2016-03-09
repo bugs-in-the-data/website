@@ -1,28 +1,43 @@
-<div id="date-container">
-	<h4>Select By Date Range</h4>
-	<div class="input-daterange input-group" id="datepicker">
-	    <input type="text" class="input-sm form-control" name="start" />
-	    <span class="input-group-addon">to</span>
-	    <input type="text" class="input-sm form-control" name="end" />
+<h4>Select By Time</h4>
+<div class="col-sm-6">
+	<div id="date-container">
+		<h5>Select By Date Range</h5>
+		<div class="input-daterange input-group" id="datepicker">
+		    <input type="text" class="input-sm form-control" name="start" value="{{filter_object.date.start}}" />
+		    <span class="input-group-addon">to</span>
+		    <input type="text" class="input-sm form-control" name="end" value="{{filter_object.date.end}}" />
+		</div>
 	</div>
-</div>	
+</div>
+<div class="col-sm-6">
+	<div id="season-list" class="">
+		<h5>Select By Season</h5>
+		<ul id="treeData" style="display: none;">
+			<li id="Spring" class="{% if 'Spring' in filter_object.season %}selected{% endif %}"> Spring
+			<li id="Summer" class="{% if 'Summer' in filter_object.season %}selected{% endif %}"> Summer
+			<li id="Fall" class="{% if 'Fall' in filter_object.season %}selected{% endif %}"> Fall
+			<li id="Winter" class="{% if 'Winter' in filter_object.season %}selected{% endif %}"> Winter
+		</ul>
+	</div>
+</div>
 
 <h4>Select By Taxa</h4>
-<div id="taxa-tree">
+<div id="taxa-tree" class="fancytree-radio">
 	<ul id="treeData" style="display: none;">
-		<li id="Insecta"> Insecta
+		<!-- <input type="radio" value="Insecta"> -->
+		<li id="order_name=NONE;family=NONE;genus=NONE;species=NONE" class="{% if lowest_levels.taxa == 'Insecta' %}selected{% else %}expanded{% endif %}" > Insecta
 		<ul>
 		{% for order, families in taxa_tree.items %}
-			<li id="{{ order|safe }}" class="selected folder">{{ order|safe }}
+			<li id="order_name={{order|safe}};family=NONE;genus=NONE;species=NONE" class="{% if filter_object.taxa.order_name == order %}{% if lowest_levels.taxa == order %}selected{% else %}expanded{% endif %}{% endif %}">{{ order|safe }}
 			<ul>
 			{% for family, genuses in families.items %}
-				<li id="{{ family|safe }}" class="selected">{{ family|safe }}
+				<li id="order_name={{order|safe}};family={{family|safe}};genus=NONE;species=NONE" class="{% if filter_object.taxa.family == family %}{% if lowest_levels.taxa == family %}selected{% else %}expanded{% endif %}{% endif %}">{{ family|safe }}
 				<ul>
 				{% for genus, specieses in genuses.items %}
-					<li id="{{ genus|safe }}" class="selected">{{ genus|safe }}
+					<li id="order_name={{order|safe}};family={{family|safe}};genus={{genus|safe}};species=NONE" class="{% if filter_object.taxa.genus == genus %}{% if lowest_levels.taxa == genus %}selected{% else %}expanded{% endif %}{% endif %}">{{ genus|safe }}
 					<ul>
 					{% for species in specieses %}
-						<li id="{{ species|safe }}" class="selected">{{ species|safe }}
+						<li id="order_name={{order|safe}};family={{family|safe}};genus={{genus|safe}};species={{species|safe}}" class="{% if filter_object.taxa.species == species %}{% endif %}">{{ genus|safe }} {{ species|safe }}
 					{% endfor %}
 					</ul>
 
@@ -35,23 +50,33 @@
 	</ul>
 </div>
 
-<h4>Select By Site</h4>
-<div id="site-tree">
+<h4>Select By Location</h4>
+<div id="site-tree" class="fancytree-radio">
 	<ul id="treeData" style="display: none;">
-	{% for drainage, sites in sites_tree.items %}
-		<li id="{{ drainage|safe }}" class="selected folder">{{ drainage|safe }}
+		<li id="state=NONE;drainage=NONE;name=NONE;sample_name=NONE" class="{% if lowest_levels.location == 'All Locations' %}selected{% else %}expanded{% endif %}"> All Locations
 		<ul>
-		{% for site in sites %}
-			<li id="{{ site|safe }}" class="selected">{{ site|safe }}
+		{% for base, drainages in sites_tree.items %}
+			<li id="state={{base|safe}};drainage=NONE;name=NONE;sample_name=NONE" class="{% if filter_object.location.state == base %}{% if lowest_levels.location == base %}selected{% else %}expanded{% endif %}{% endif %}">{{ base|safe }}
+			<ul>
+			{% for drainage, sites in drainages.items %}
+				<li id="state={{base|safe}};drainage={{drainage|safe}};name=NONE;sample_name=NONE" class="{% if filter_object.location.drainage == drainage %}{% if lowest_levels.location == drainage %}selected{% else %}expanded{% endif %}{% endif %}">{{ drainage|safe }}
+				<ul>
+				{% for site, samples in sites.items %}
+					<li id="state={{base|safe}};drainage={{drainage|safe}};name={{site|safe}};sample_name=NONE" class="{% if filter_object.location.name == site %}{% if lowest_levels.location == site %}selected{% else %}expanded{% endif %}{% endif %}">{{ site|safe }}
+					<ul>
+					{% for sample in samples %}
+						<li id="state={{base|safe}};drainage={{drainage|safe}};name={{site|safe}};sample_name={{sample|safe}}" class="{% if filter_object.location.sample_name == sample %}selected{% endif %}">{{ sample|safe }}
+					{% endfor %}
+					</ul>
+
+				{% endfor %}
+				</ul>
+			{% endfor %}
+			</ul>
 		{% endfor %}
 		</ul>
-	{% endfor %}
 	</ul>
 </div>
-
-
-
-
 
 <script type="text/javascript">
 
@@ -59,21 +84,54 @@ $('#date-container .input-daterange').datepicker({
 });
 
 $(function(){
+	$("#season-list").fancytree({
+		checkbox: true, // gives nodes checkboxes
+		selectMode: 3, 
+		icon: false, // gets rid of ugly icons
+		// Because there is > 1 tree on this page
+		cookieId: "fancytree-season",
+      	idPrefix: "fancytree-season-",
+	});
+
 	$("#taxa-tree").fancytree({
 		checkbox: true, // gives nodes checkboxes
-		selectMode: 3, // option 3 selects or deselects all children
+		selectMode: 1, 
 		icon: false, // gets rid of ugly icons
+		// Because there is > 1 tree on this page
+		cookieId: "fancytree-taxa",
+      	idPrefix: "fancytree-taxa-",
 	});
+	var node = $("#taxa-tree").fancytree("getRootNode");
+	node.sortChildren(null, true);
 
-});
-
-$(function(){
-	$("#site-tree").fancytree({
+    $("#site-tree").fancytree({
 		checkbox: true, // gives nodes checkboxes
-		selectMode: 3, // option 3 selects or deselects all children
+		selectMode: 1, 
 		icon: false, // gets rid of ugly icons
+		// Because there is > 1 tree on this page
+		cookieId: "fancytree-site",
+      	idPrefix: "fancytree-site-",
 	});
+	var node = $("#taxa-tree").fancytree("getRootNode");
+	node.sortChildren(null, true);
 
+	$("form").submit(function() {
+      // Render hidden <input> elements for active and selected nodes
+      $("#season-list").fancytree("getTree").generateFormElements();
+      $("#taxa-tree").fancytree("getTree").generateFormElements();
+      $("#site-tree").fancytree("getTree").generateFormElements();
+      return true;
+    });
 });
+
+// $(function(){
+// 	$("#site-tree").fancytree({
+// 		checkbox: true, // gives nodes checkboxes
+// 		selectMode: 1, // option 3 selects or deselects all children
+// 		icon: false, // gets rid of ugly icons
+// 	});
+// 	var node = $("#taxa-tree").fancytree("getRootNode");
+// 	node.sortChildren(null, true);
+// });
 
 </script>

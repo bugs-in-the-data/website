@@ -10,3 +10,8 @@
   display: inline-block;
   margin-left: 20px;
 }
+
+.bar-chart {
+  @extend .graph-box;
+  width: 800px;
+}

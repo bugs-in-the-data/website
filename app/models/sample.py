@@ -17,9 +17,10 @@ class SampleModel(models.Model):
     latitude = models.CharField(max_length=250, null=True)
     longitude = models.CharField(max_length=250, null=True)
 	
-    def getAllSamples(self):
+    def getAllSamples(self, filterHelper):
         data = []
         samples = SampleModel.objects.values('sample_name', 'latitude', 'longitude')
+        samples = filterHelper.refineSampleQuery(samples)
 
         for s in samples:
             if s["latitude"] == None or s["longitude"] == None:
@@ -31,3 +32,25 @@ class SampleModel(models.Model):
             data.append([name, lat, long])
         
         return data
+
+    def getSitesTree(self):
+        # entries = SampleModel.objects.values('site__state', 'site__drainage', 'site__name', 'sample_name')
+        entries = SampleModel.objects.select_related('site').values('site__state', 'site__drainage', 'site__name', 'sample_name')
+
+        sites_tree = {}
+        for entry in entries:
+            sites_tree[_get_field(entry, 'site__state')] = {}
+
+        for entry in entries:
+            sites_tree[_get_field(entry, 'site__state')][_get_field(entry, 'site__drainage')] = {}
+
+        for entry in entries:
+            sites_tree[_get_field(entry, 'site__state')][_get_field(entry, 'site__drainage')][_get_field(entry, 'site__name')] = []
+
+        for entry in entries:
+            sites_tree[_get_field(entry, 'site__state')][_get_field(entry, 'site__drainage')][_get_field(entry, 'site__name')].append(_get_field(entry, 'sample_name'))
+
+        return sites_tree
+
+def _get_field(entry, field):
+    return entry[field].encode('utf-8')
