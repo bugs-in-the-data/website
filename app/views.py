@@ -18,26 +18,28 @@ def index(request):
     template = loader.get_template('index.html')
 
     filterHelper = FilterHelperModel()
+    filter_object = filterHelper.getFilterObject()
+
     subsample = SubsampleModel()
     site = SiteModel()
     sample = SampleModel()
 
-    filter_object = filterHelper.getFilterObject()
-
     if request.POST:
         filter_object = filterHelper.handleFilterPostData(request.POST)
-        # print filter_object
+        # print filterHelper.getFilterObject()
+
+    lowest_levels = filterHelper.getLowestLevels()
 
     data = {
         'site_names' : site.getSiteNames(),
         'sites_tree' : sample.getSitesTree(),
         'taxa_tree' : subsample.getTaxaTree(),
-        'pie_chart'  : subsample.getPieChartData(),
-        'bar_chart'  : subsample.getStackedBarChartData(),
-        'line_chart' : subsample.getLineChartData(),
-        'samples'   : sample.getAllSamples(),
+        'pie_chart'  : subsample.getPieChartData(filterHelper),
+        'bar_chart'  : subsample.getStackedBarChartData(filterHelper),
+        'line_chart' : subsample.getLineChartData(filterHelper),
+        'samples'   : sample.getAllSamples(filterHelper),
         'filter_object' : filter_object,
-        'lowest_levels' : filterHelper.getLowestLevels(),
+        'lowest_levels' : lowest_levels,
     }
 
     # test = subsample.getStackedBarChartData()
