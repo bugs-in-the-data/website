@@ -59,19 +59,19 @@
 			<h4>Select By Location</h4>
 			<div id="site-tree" class="fancytree-radio">
 				<ul id="treeData" style="display: none;">
-					<li id="state=NONE;drainage=NONE;name=NONE;sample_name=NONE" class="{% if lowest_levels.location == 'All Locations' %}selected{% else %}expanded{% endif %}"> All Locations
+					<li id="installation=NONE;drainage=NONE;name=NONE;sample_name=NONE" class="{% if lowest_levels.location == 'All Locations' %}selected{% else %}expanded{% endif %}"> All Locations
 					<ul>
 					{% for base, drainages in sites_tree.items %}
-						<li id="state={{base|safe}};drainage=NONE;name=NONE;sample_name=NONE" class="{% if filter_object.location.state == base %}{% if lowest_levels.location == base %}selected{% else %}expanded{% endif %}{% endif %}">{{ base|safe }}
+						<li id="installation={{base|safe}};drainage=NONE;name=NONE;sample_name=NONE" class="{% if filter_object.location.installation == base %}{% if lowest_levels.location == base %}selected{% else %}expanded{% endif %}{% endif %}">{{ base|safe }}
 						<ul>
 						{% for drainage, sites in drainages.items %}
-							<li id="state={{base|safe}};drainage={{drainage|safe}};name=NONE;sample_name=NONE" class="{% if filter_object.location.drainage == drainage %}{% if lowest_levels.location == drainage %}selected{% else %}expanded{% endif %}{% endif %}">{{ drainage|safe }}
+							<li id="installation={{base|safe}};drainage={{drainage|safe}};name=NONE;sample_name=NONE" class="{% if filter_object.location.drainage == drainage %}{% if lowest_levels.location == drainage %}selected{% else %}expanded{% endif %}{% endif %}">{{ drainage|safe }}
 							<ul>
 							{% for site, samples in sites.items %}
-								<li id="state={{base|safe}};drainage={{drainage|safe}};name={{site|safe}};sample_name=NONE" class="{% if filter_object.location.name == site %}{% if lowest_levels.location == site %}selected{% else %}expanded{% endif %}{% endif %}">{{ site|safe }}
+								<li id="installation={{base|safe}};drainage={{drainage|safe}};name={{site|safe}};sample_name=NONE" class="{% if filter_object.location.name == site %}{% if lowest_levels.location == site %}selected{% else %}expanded{% endif %}{% endif %}">{{ site|safe }}
 								<ul>
 								{% for sample in samples %}
-									<li id="state={{base|safe}};drainage={{drainage|safe}};name={{site|safe}};sample_name={{sample|safe}}" class="{% if filter_object.location.sample_name == sample %}selected{% endif %}">{{ sample|safe }}
+									<li id="installation={{base|safe}};drainage={{drainage|safe}};name={{site|safe}};sample_name={{sample|safe}}" class="{% if filter_object.location.sample_name == sample %}selected{% endif %}">{{ sample|safe }}
 								{% endfor %}
 								</ul>
 
