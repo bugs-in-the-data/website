@@ -36,36 +36,19 @@
         gl.add(g);
       }
 
-      /*var p = new Point(-112, 35);
-      var s = new SimpleMarkerSymbol();
-      s.setSize(30);
-      s.setColor(new Color([255, 255, 0, 0.5]));
-      var g = new Graphic(p, s);
-      gl.add(g);
-
-      p = new Point(parseFloat(samples[0][2]), parseFloat(samples[0][1]));
-      console.log(p);
-      s = new SimpleMarkerSymbol();
-      s.setSize(30);
-      s.setColor(new Color([0, 255, 255, 0.75]));
-      g = new Graphic(p, s);
-      gl.add(g);
-
-      p = new Point(-115, 31);
-      s = new SimpleMarkerSymbol();
-      s.setSize(30);
-      s.setColor(new Color([110, 205, 255, 0.75]));
-      g = new Graphic(p, s);
-      gl.add(g);
-
-      p = new Point(-113, 33);
-      s = new SimpleMarkerSymbol();
-      s.setSize(30);
-      s.setColor(new Color([0, 100, 255, 0.75]));
-      g = new Graphic(p, s);
-      gl.add(g);*/
-
       map.addLayer(gl);
+      
+      var graphics = gl.graphics;
+      var extent = esri.graphicsExtent(graphics);
+      
+      if(!extent && graphics.length == 1) {
+        var point = graphics[0];
+        extent = new esri.geometry.Extent(point.x - 1, point.y - 1, point.x + 1, point.y + 1, point.SpatialReference);
+      }
+
+      if(extent) {
+        map.setExtent(extent, true);
+      }
     });
   });
 </script>

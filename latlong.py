@@ -63,8 +63,7 @@ def main():
     conn = MySQLdb.connect(
         host = "localhost",
         user = "root",
-        passwd = "",
-        passwd = "",
+        passwd = "Ty3Jasper!",
         db = "bugdata"
     )
 
@@ -91,6 +90,13 @@ def main():
         except MySQLdb.Error, e:
             print e
             conn.rollback()
+            
+    ### EXCEPTIONS
+    ### Remove points with bad coordinates
+    query = "UPDATE app_samplemodel SET latitude = NULL, longitude = NULL WHERE sample_name IN ('GFB_AFF_1P_oct13', 'GFB_AFF_2R_oct13', 'GaS_5P_apr13', 'HuTL_1P_apr13', 'GFB_BFF_1P_n12', 'SAN_SASU_1R_oct13')"
+    print query
+    x.execute(query)
+    conn.commit()
 
 if __name__ == '__main__':
     main()
