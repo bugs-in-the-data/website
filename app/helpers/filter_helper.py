@@ -8,7 +8,7 @@ class FilterHelperModel():
                 'species': 'NONE',
             },
             'location': {
-                'state': 'NONE',
+                'installation': 'NONE',
                 'drainage': 'NONE',
                 'name': 'NONE',
                 'sample_name': 'NONE',
@@ -69,8 +69,8 @@ class FilterHelperModel():
             query = query.filter(sample__site__name=self.filters['location']['name'])
         elif self.filters['location']['drainage'] != 'NONE':
             query = query.filter(sample__site__drainage=self.filters['location']['drainage'])
-        elif self.filters['location']['state'] != 'NONE':
-            query = query.filter(sample__site__state=self.filters['location']['state'])
+        elif self.filters['location']['installation'] != 'NONE':
+            query = query.filter(sample__site__installation=self.filters['location']['installation'])
         else:
             pass
 
@@ -83,8 +83,8 @@ class FilterHelperModel():
             query = query.filter(site__name=self.filters['location']['name'])
         elif self.filters['location']['drainage'] != 'NONE':
             query = query.filter(site__drainage=self.filters['location']['drainage'])
-        elif self.filters['location']['state'] != 'NONE':
-            query = query.filter(site__state=self.filters['location']['state'])
+        elif self.filters['location']['installation'] != 'NONE':
+            query = query.filter(site__installation=self.filters['location']['installation'])
         else:
             pass
         
@@ -109,14 +109,14 @@ class FilterHelperModel():
             self.subTaxa = 'species'
             lowest['taxa'] = self.filters['taxa']['species']
 
-        if self.filters['location']['state'] == 'NONE':
-            self.subSampleSubLocation = 'sample__site__state'
-            self.sampleSubLocation = 'site__state'
+        if self.filters['location']['installation'] == 'NONE':
+            self.subSampleSubLocation = 'sample__site__installation'
+            self.sampleSubLocation = 'site__installation'
             lowest['location'] = 'All Locations'
         elif self.filters['location']['drainage'] == 'NONE':
             self.sampleSubLocation = 'site__drainage'
             self.subSampleSubLocation = 'sample__site__drainage'
-            lowest['location'] = self.filters['location']['state']
+            lowest['location'] = self.filters['location']['installation']
         elif self.filters['location']['name'] == 'NONE':
             self.sampleSubLocation = 'site__name'
             self.subSampleSubLocation = 'sample__site__name'
