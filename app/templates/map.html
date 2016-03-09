@@ -4,7 +4,7 @@
   var samples = {{samples|safe}};
   var map;
   require([
-        "esri/map", 
+        "esri/map",
         "esri/geometry/Point",
         "esri/symbols/SimpleMarkerSymbol",
         "esri/graphic",
@@ -35,13 +35,13 @@
         g = new Graphic(p, s);
         gl.add(g);
       }
-      
+
       /*var p = new Point(-112, 35);
       var s = new SimpleMarkerSymbol();
       s.setSize(30);
       s.setColor(new Color([255, 255, 0, 0.5]));
       var g = new Graphic(p, s);
-      gl.add(g);      
+      gl.add(g);
 
       p = new Point(parseFloat(samples[0][2]), parseFloat(samples[0][1]));
       console.log(p);
@@ -64,7 +64,7 @@
       s.setColor(new Color([0, 100, 255, 0.75]));
       g = new Graphic(p, s);
       gl.add(g);*/
-      
+
       map.addLayer(gl);
     });
   });

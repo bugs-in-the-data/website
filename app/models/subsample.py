@@ -19,36 +19,43 @@ class SubsampleModel(models.Model):
     taxa = models.CharField(max_length=250, null=True)
     total_count = models.IntegerField(null=True)
 
-    def getPieChartData(self):
+    def getPieChartData(self, filterHelper):
         data = []
-        uniqueOrders = SubsampleModel.objects.values('order_name').annotate(order_count=Count('order_name'))
+        # uniqueOrders = SubsampleModel.objects.values('order_name').annotate(order_count=Count('order_name'))
+        uniqueOrders = SubsampleModel.objects.values(filterHelper.getSubTaxa()).annotate(order_count=Count('order_name'))
+        uniqueOrders = filterHelper.refineSubsampleQuery(uniqueOrders)
         for u in uniqueOrders:
-            data.append([u["order_name"].encode("utf-8"), u["order_count"]])
+            data.append([u[filterHelper.getSubTaxa()].encode("utf-8"), u["order_count"]])
+            # data.append([u["order_name"].encode("utf-8"), u["order_count"]])
         return data
 
-    def getLineChartData(self):
+    def getLineChartData(self, filterHelper):
         ## @NOTE: the query needs to mimic
         ## SELECT y.date, x.order_name, COUNT(x.order_name) as order_count
         ## FROM app_subsamplemodel x
         ## LEFT JOIN app_samplemodel y on x.sample_id = y.id
         ## GROUP BY CONCAT(y.date,x.order_name);
-        ordersByDate = SubsampleModel.objects.select_related('sample').values('sample__date', 'order_name').annotate(order_count=Count('order_name'))
+
+        # ordersByDate = SubsampleModel.objects.select_related('sample').values('sample__date', 'order_name').annotate(order_count=Count('order_name'))
+        ordersByDate = SubsampleModel.objects.select_related('sample').values('sample__date', filterHelper.getSubTaxa()).annotate(order_count=Count('order_name'))
+        ordersByDate = filterHelper.refineSubsampleQuery(ordersByDate)
 
         seen = []
-        orders = []
+        labels = []
         temp = {}
         for o in ordersByDate:
             date = o["sample__date"].strftime("%m-%d-%Y")
-            order = o["order_name"].encode("utf-8")
+            # label = o["order_name"].encode("utf-8")
+            label = o[filterHelper.getSubTaxa()].encode("utf-8")
             count = o["order_count"]
 
             if date not in seen:
                 seen.append(date)
-            if order not in orders:
-                orders.append(order)
-                temp[order] = {}
+            if label not in labels:
+                labels.append(label)
+                temp[label] = {}
 
-            temp[order][date] = count
+            temp[label][date] = count
 
         seen = sorted(seen)
 
