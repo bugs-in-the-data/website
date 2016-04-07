@@ -53,13 +53,15 @@ def main():
 		zone			= "NULL" if str(row['Zone']).strip() == 'nan' else str(row['Zone']).strip()
 		utm_easting		= "NULL" if str(row['UTM Easting']).strip() == 'nan' else str(row['UTM Easting']).strip()
 		utm_northing	= "NULL" if str(row['UTM Northing']).strip() == 'nan' else str(row['UTM Northing']).strip()
+		season			= "NULL" if str(row['Season']).strip() == 'nan' else str(row['Season']).strip()
+		
 
 		x.execute("SELECT * FROM app_sitemodel WHERE name =\""+site+"\"")
 		existing = x.fetchall()
 		if existing:
 			site_key = int(existing[0][0])
 			try:
-				x.execute("""INSERT INTO app_samplemodel (date, subsite, microhabitat, sample_hydro, habitat_size, zone, utm_easting, utm_northing, site_id, sample_name) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)""", (date, subsite, microhabitat, sample_hydro, habitat_size, zone, utm_easting, utm_northing, site_key, sample_name))
+				x.execute("""INSERT INTO app_samplemodel (date, subsite, microhabitat, sample_hydro, habitat_size, zone, utm_easting, utm_northing, site_id, sample_name, season) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)""", (date, subsite, microhabitat, sample_hydro, habitat_size, zone, utm_easting, utm_northing, site_key, sample_name, season))
 				conn.commit()
 			except:
 				conn.rollback()
