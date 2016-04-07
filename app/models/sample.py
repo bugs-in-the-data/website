@@ -46,10 +46,10 @@ class SampleModel(models.Model):
             sites_tree[_get_field(entry, 'site__installation')][_get_field(entry, 'site__drainage')] = {}
 
         for entry in entries:
-            sites_tree[_get_field(entry, 'site__installation')][_get_field(entry, 'site__drainage')][_get_field(entry, 'site__name')] = []
+            sites_tree[_get_field(entry, 'site__installation')][_get_field(entry, 'site__drainage')][_get_field(entry, 'site__name')] = {}
 
         for entry in entries:
-            sites_tree[_get_field(entry, 'site__installation')][_get_field(entry, 'site__drainage')][_get_field(entry, 'site__name')].append(_get_field(entry, 'sample_name'))
+            sites_tree[_get_field(entry, 'site__installation')][_get_field(entry, 'site__drainage')][_get_field(entry, 'site__name')][_get_field(entry, 'sample_name')] = True
 
         return sites_tree
 
