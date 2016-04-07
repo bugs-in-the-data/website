@@ -130,16 +130,24 @@ class SubsampleModel(models.Model):
 
         taxa_tree = {}
         for entry in entries:
-            taxa_tree[_get_field(entry, 'order_name')] = {}
+            order_name = _get_field(entry, 'order_name')
+            if order_name != 'NULL':
+                taxa_tree[order_name] = {}
 
         for entry in entries:
-            taxa_tree[_get_field(entry, 'order_name')][_get_field(entry, 'family')] = {}
+            family = _get_field(entry, 'family')
+            if family != 'NULL':
+                taxa_tree[_get_field(entry, 'order_name')][family] = {}
 
         for entry in entries:
-            taxa_tree[_get_field(entry, 'order_name')][_get_field(entry, 'family')][_get_field(entry, 'genus')] = []
+            genus = _get_field(entry, 'genus')
+            if genus != 'NULL':
+                taxa_tree[_get_field(entry, 'order_name')][_get_field(entry, 'family')][genus] = {}
 
         for entry in entries:
-            taxa_tree[_get_field(entry, 'order_name')][_get_field(entry, 'family')][_get_field(entry, 'genus')].append(_get_field(entry, 'species'))
+            species = _get_field(entry, 'species')
+            if species != 'NULL':
+                taxa_tree[_get_field(entry, 'order_name')][_get_field(entry, 'family')][_get_field(entry, 'genus')][species] = True
 
 
         return taxa_tree
