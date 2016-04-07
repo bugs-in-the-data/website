@@ -1,3 +1,5 @@
+import datetime
+
 class FilterHelperModel():
     def __init__(self):
         self.filters = {
@@ -30,6 +32,12 @@ class FilterHelperModel():
 
     def getSubSampleSubLocation(self):
         return self.subSampleSubLocation
+
+    def getStartDate(self):
+        return self.startDate
+
+    def getEndDate(self):
+        return self.endDate
 
     def getSubTaxa(self):
         return self.subTaxa
@@ -74,6 +82,15 @@ class FilterHelperModel():
         else:
             pass
 
+        try:
+            query = query.filter(sample__date__gte=datetime.datetime.strptime(self.startDate, '%m/%d/%Y').strftime('%Y-%m-%d'))
+        except ValueError:
+            print "incorrect start date"
+        try:
+            query = query.filter(sample__date__lte=datetime.datetime.strptime(self.endDate, '%m/%d/%Y').strftime('%Y-%m-%d'))
+        except ValueError:
+            print "incorrect end date"
+
         return query
 
     def refineSampleQuery(self, query):
@@ -87,11 +104,23 @@ class FilterHelperModel():
             query = query.filter(site__installation=self.filters['location']['installation'])
         else:
             pass
-        
+
+        try:
+            query = query.filter(date__gte=datetime.datetime.strptime(self.startDate, '%m/%d/%Y').strftime('%Y-%m-%d'))
+        except ValueError:
+            print "incorrect start date"
+        try:
+            query = query.filter(date__lte=datetime.datetime.strptime(self.endDate, '%m/%d/%Y').strftime('%Y-%m-%d'))
+        except ValueError:
+            print "incorrect end date"
+
         return query
 
     def getLowestLevels(self):
         lowest = {}
+
+        self.startDate = self.filters['date']['start']
+        self.endDate = self.filters['date']['end']
 
         if self.filters['taxa']['order_name'] == 'NONE':
             self.subTaxa = 'order_name'
