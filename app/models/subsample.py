@@ -25,6 +25,7 @@ class SubsampleModel(models.Model):
         uniqueOrders = filterHelper.refineSubsampleQuery(uniqueOrders)
         for u in uniqueOrders:
             data.append([u[filterHelper.getSubTaxa()].encode("utf-8"), u["taxa_count"]])
+        data = sorted(data, key=lambda a_entry: a_entry[0])
         return data
 
     def getLineChartData(self, filterHelper):
@@ -71,7 +72,7 @@ class SubsampleModel(models.Model):
 
         # label the x-axis for printing into c3
         seen.insert(0, 'x'.encode("utf-8"))
-
+        data = sorted(data, key=lambda a_entry: a_entry[0])
         return data
 
     def getStackedBarChartData(self, filterHelper):
@@ -123,6 +124,7 @@ class SubsampleModel(models.Model):
         # label the x-axis for printing into c3
         locations.insert(0, 'x'.encode("utf-8"))
 
+        data = sorted(data, key=lambda a_entry: a_entry[0])
         return data
 
     def getTaxaTree(self):
