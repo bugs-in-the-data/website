@@ -16,6 +16,7 @@ class SampleModel(models.Model):
     utm_northing = models.CharField(max_length=250, null=True)
     latitude = models.CharField(max_length=250, null=True)
     longitude = models.CharField(max_length=250, null=True)
+    season = models.CharField(max_length=250, null=True)
 	
     def getAllSamples(self, filterHelper):
         data = []

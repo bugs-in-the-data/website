@@ -91,6 +91,8 @@ class FilterHelperModel():
         except ValueError:
             print "incorrect end date"
 
+        query = query.filter(sample__season__in=self.filters['season'])
+
         return query
 
     def refineSampleQuery(self, query):
@@ -113,6 +115,8 @@ class FilterHelperModel():
             query = query.filter(date__lte=datetime.datetime.strptime(self.endDate, '%m/%d/%Y').strftime('%Y-%m-%d'))
         except ValueError:
             print "incorrect end date"
+
+        query = query.filter(season__in=self.filters['season'])
 
         return query
 
