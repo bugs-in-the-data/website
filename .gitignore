@@ -1,7 +1,5 @@
 .DS_Store
 .installed.cfg
-wsgi.py
-website/wsgi.py
 bin
 develop-eggs
 downloads
