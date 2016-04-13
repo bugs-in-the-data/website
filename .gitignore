@@ -13,3 +13,4 @@ lib64
 *.cnf
 local_settings.py
 *.sql
+wsgi.py
