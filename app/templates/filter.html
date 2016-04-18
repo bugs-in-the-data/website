@@ -42,7 +42,7 @@
 								<li id="order_name={{order|safe}};family={{family|safe}};genus={{genus|safe}};species=NONE" class="{% if filter_object.taxa.genus == genus %}{% if lowest_levels.taxa == genus %}selected{% else %}expanded{% endif %}{% endif %}">{{ genus|safe }}
 								<ul>
 								{% for species in specieses %}
-									<li id="order_name={{order|safe}};family={{family|safe}};genus={{genus|safe}};species={{species|safe}}" class="{% if filter_object.taxa.species == species %}{% endif %}">{{ genus|safe }} {{ species|safe }}
+									<li id="order_name={{order|safe}};family={{family|safe}};genus={{genus|safe}};species={{species|safe}}" class="{% if filter_object.taxa.species == species %}selected{% endif %}">{{ genus|safe }} {{ species|safe }}
 								{% endfor %}
 								</ul>
 
