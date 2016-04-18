@@ -5,9 +5,9 @@
 			<div id="date-container">
 				<h4>Select By Date Range</h4>
 				<div class="input-daterange input-group" id="datepicker">
-				    <input type="text" class="input-sm form-control" name="start" value="{{filter_object.date.start}}" />
+				    <input type="text" class="input-sm form-control" name="start" value="{{filter_object.date.start}}" readonly="readonly"/>
 				    <span class="input-group-addon">to</span>
-				    <input type="text" class="input-sm form-control" name="end" value="{{filter_object.date.end}}" />
+				    <input type="text" class="input-sm form-control" name="end" value="{{filter_object.date.end}}" readonly="readonly"/>
 				</div>
 			</div>
 		</div>
@@ -104,7 +104,7 @@ $('#date-container .input-daterange').datepicker().on("changeDate", change_filte
 $(function(){
 	$("#season-list").fancytree({
 		checkbox: true, // gives nodes checkboxes
-		selectMode: 3, 
+		selectMode: 3,
 		icon: false, // gets rid of ugly icons
 		// Because there is > 1 tree on this page
 		cookieId: "fancytree-season",
@@ -114,7 +114,7 @@ $(function(){
 
 	$("#taxa-tree").fancytree({
 		checkbox: true, // gives nodes checkboxes
-		selectMode: 1, 
+		selectMode: 1,
 		icon: false, // gets rid of ugly icons
 		// Because there is > 1 tree on this page
 		cookieId: "fancytree-taxa",
@@ -126,7 +126,7 @@ $(function(){
 
     $("#site-tree").fancytree({
 		checkbox: true, // gives nodes checkboxes
-		selectMode: 1, 
+		selectMode: 1,
 		icon: false, // gets rid of ugly icons
 		// Because there is > 1 tree on this page
 		cookieId: "fancytree-site",
