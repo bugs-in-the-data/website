@@ -96,6 +96,17 @@ class FilterHelperModel():
         return query
 
     def refineSampleQuery(self, query):
+        if self.filters['taxa']['species'] != 'NONE':
+            query = query.filter(subsamplemodel__species=self.filters['taxa']['species'])
+        elif self.filters['taxa']['genus'] != 'NONE':
+            query = query.filter(subsamplemodel__genus=self.filters['taxa']['genus'])
+        elif self.filters['taxa']['family'] != 'NONE':
+            query = query.filter(subsamplemodel__family=self.filters['taxa']['family'])
+        elif self.filters['taxa']['order_name'] != 'NONE':
+            query = query.filter(subsamplemodel__order_name=self.filters['taxa']['order_name'])
+        else:
+            pass
+    
         if self.filters['location']['sample_name'] != 'NONE':
             query = query.filter(sample_name=self.filters['location']['sample_name'])
         elif self.filters['location']['name'] != 'NONE':
