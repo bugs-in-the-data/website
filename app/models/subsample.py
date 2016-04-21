@@ -21,10 +21,16 @@ class SubsampleModel(models.Model):
 
     def getPieChartData(self, filterHelper):
         data = []
-        uniqueOrders = SubsampleModel.objects.values(filterHelper.getSubTaxa()).annotate(taxa_count=Count('taxa',distinct=True))
+        uniqueOrders = SubsampleModel.objects.values(filterHelper.getSubTaxa()).annotate(taxa_count=Count('species',distinct=True))
         uniqueOrders = filterHelper.refineSubsampleQuery(uniqueOrders)
         for u in uniqueOrders:
-            data.append([u[filterHelper.getSubTaxa()].encode("utf-8"), u["taxa_count"]])
+            label = u[filterHelper.getSubTaxa()].encode("utf-8")
+            count = u["taxa_count"]
+
+            if label == 'NULL':
+                continue
+
+            data.append([label, count])
         data = sorted(data, key=lambda a_entry: a_entry[0])
         return data
 
@@ -35,8 +41,7 @@ class SubsampleModel(models.Model):
         ## LEFT JOIN app_samplemodel y on x.sample_id = y.id
         ## GROUP BY CONCAT(y.date,x.order_name);
 
-        # ordersByDate = SubsampleModel.objects.select_related('sample').values('sample__date', 'order_name').annotate(order_count=Count('order_name'))
-        ordersByDate = SubsampleModel.objects.select_related('sample').values('sample__date', filterHelper.getSubTaxa()).annotate(taxa_count=Count('taxa',distinct=True))
+        ordersByDate = SubsampleModel.objects.select_related('sample').values('sample__date', filterHelper.getSubTaxa()).annotate(taxa_count=Count('species'))
         ordersByDate = filterHelper.refineSubsampleQuery(ordersByDate)
 
         seen = []
@@ -44,9 +49,11 @@ class SubsampleModel(models.Model):
         temp = {}
         for o in ordersByDate:
             date = o["sample__date"].strftime("%m-%d-%Y")
-            # label = o["order_name"].encode("utf-8")
             label = o[filterHelper.getSubTaxa()].encode("utf-8")
             count = o["taxa_count"]
+
+            if label == 'NULL':
+                continue
 
             if date not in seen:
                 seen.append(date)
@@ -76,7 +83,7 @@ class SubsampleModel(models.Model):
         return data
 
     def getStackedBarChartData(self, filterHelper):
-        ordersBySite = SubsampleModel.objects.select_related('sample__site').values(filterHelper.getSubSampleSubLocation(), filterHelper.getSubTaxa()).annotate(taxa_count=Count('taxa', distinct=True))
+        ordersBySite = SubsampleModel.objects.select_related('sample__site').values(filterHelper.getSubSampleSubLocation(), filterHelper.getSubTaxa()).annotate(taxa_count=Count('species', distinct=True))
         ordersBySite = filterHelper.refineSubsampleQuery(ordersBySite)
 
         seen = []
@@ -88,6 +95,9 @@ class SubsampleModel(models.Model):
             loc = o[filterHelper.getSubSampleSubLocation()].encode("utf-8")
             count = o["taxa_count"]
 
+            if label == 'NULL':
+                continue
+
             if label not in seen:
                 seen.append(label)
                 temp[label] = {}
@@ -98,27 +108,18 @@ class SubsampleModel(models.Model):
 
         locations = sorted(locations)
 
-
-        ## @NOTE: this needs to be removed to see the full set of data,
-        ## bc this is purely for presentation purposes. when it's done
-        ## correctly, we won't need any kind of 'count' variable.
-        count = 0
-
         data = []
         data.append(locations)
         for key, val in temp.iteritems():
             count = 0
             row = [key]
             for loc in locations:
-                if count == 10:
-                    continue
 
                 if loc in temp[key]:
                     row.append(temp[key][loc])
                 else:
                     row.append(0)
 
-                count = count + 1
             data.append(row)
 
         # label the x-axis for printing into c3
