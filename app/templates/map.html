@@ -26,8 +26,13 @@
       var p;
       var s;
       var g;
+      var has_coords = 0;
       for(i = 0; i < samples.length; i++)
       {
+        if(has_coords == 0 && samples[i][2])
+        {
+            has_coords = 1;
+        }
         p = new Point(parseFloat(samples[i][2]), parseFloat(samples[i][1]));
         s = new SimpleMarkerSymbol();
         s.setSize(20);
@@ -39,15 +44,23 @@
       map.addLayer(gl);
       
       var graphics = gl.graphics;
-      var extent = esri.graphicsExtent(graphics);
       
-      if(!extent && graphics.length == 1) {
-        var point = graphics[0];
-        extent = new esri.geometry.Extent(point.x - 1, point.y - 1, point.x + 1, point.y + 1, point.SpatialReference);
+      if(has_coords == 1)
+      {
+        var extent = esri.graphicsExtent(graphics);
+      
+        if(!extent && graphics.length == 1) {
+            var point = graphics[0];
+            extent = new esri.geometry.Extent(point.x - 1, point.y - 1, point.x + 1, point.y + 1, point.SpatialReference);
+        }
+        
+        if(extent) {
+            map.setExtent(extent, true);
+        }
       }
-
-      if(extent) {
-        map.setExtent(extent, true);
+      else
+      {
+        alert("No coordinates available for selected location.")
       }
     });
   });
