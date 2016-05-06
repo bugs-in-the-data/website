@@ -6,6 +6,7 @@
 
 .graph-box {
   overflow: hidden;
+  vertical-align: top;
   width: 400px;
   display: inline-block;
   margin-left: 20px;
@@ -14,4 +15,9 @@
 .bar-chart {
   @extend .graph-box;
   width: 800px;
+}
+
+.line-chart {
+  @extend .graph-box;
+  width: 600px;
 }
