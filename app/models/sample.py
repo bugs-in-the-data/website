@@ -20,7 +20,7 @@ class SampleModel(models.Model):
 	
     def getAllSamples(self, filterHelper):
         data = []
-        samples = SampleModel.objects.values('sample_name', 'latitude', 'longitude')
+        samples = SampleModel.objects.select_related('site').values('sample_name', 'latitude', 'longitude', 'site__installation', 'site__drainage', 'site__name')
         samples = filterHelper.refineSampleQuery(samples)
 
         for s in samples:
@@ -29,8 +29,11 @@ class SampleModel(models.Model):
             name = s["sample_name"].encode("utf-8")
             lat = s["latitude"].encode("utf-8")
             long = s["longitude"].encode("utf-8")
+            installation = s["site__installation"].encode("utf-8")
+            drainage = s["site__drainage"].encode("utf-8")
+            site = s["site__name"].encode("utf-8")
             
-            data.append([name, lat, long])
+            data.append([name, lat, long, installation, drainage, site])
         
         return data
 

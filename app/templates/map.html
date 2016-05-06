@@ -10,9 +10,10 @@
         "esri/graphic",
         "esri/layers/GraphicsLayer",
         "esri/Color",
+        "esri/InfoTemplate",
         "dojo/domReady!"
       ], function(
-        Map, Point, SimpleMarkerSymbol, Graphic, GraphicsLayer, Color
+        Map, Point, SimpleMarkerSymbol, Graphic, GraphicsLayer, Color, InfoTemplate
       ) {
     map = new Map("map", {
       center: [-112, 35],
@@ -20,34 +21,65 @@
       basemap: "topo"
     });
 
+
+    
     map.on("load", function() {
       //Create and populate graphics layer
       var gl = new GraphicsLayer();
       var p;
       var s;
       var g;
+      var has_coords = 0;
       for(i = 0; i < samples.length; i++)
       {
+        if(has_coords == 0 && samples[i][2])
+        {
+            has_coords = 1;
+        }
         p = new Point(parseFloat(samples[i][2]), parseFloat(samples[i][1]));
         s = new SimpleMarkerSymbol();
         s.setSize(20);
         s.setColor(new Color([255, 127, 14, 0.25]));
         g = new Graphic(p, s);
+        var infoTemplate = new InfoTemplate();
+        infoTemplate.setTitle(samples[i][0]);
+        infoTemplate.setContent("<b>Base:</b> " + samples[i][3] + "<br><b>Basin:</b> " + samples[i][4] + "<br><b>Site:</b> " + samples[i][5]);
+        g.setInfoTemplate(infoTemplate);
         gl.add(g);
       }
 
       map.addLayer(gl);
       
-      var graphics = gl.graphics;
-      var extent = esri.graphicsExtent(graphics);
-      
-      if(!extent && graphics.length == 1) {
-        var point = graphics[0];
-        extent = new esri.geometry.Extent(point.x - 1, point.y - 1, point.x + 1, point.y + 1, point.SpatialReference);
-      }
+      dojo.connect(gl, "onMouseOver", function(evt) {
+        var g = evt.graphic;
+        map.infoWindow.setContent(g.getContent());
+        map.infoWindow.setTitle(g.getTitle());
+        map.infoWindow.show(evt.screenPoint, map.getInfoWindowAnchor(evt.screenPoint));
+        
+      });
 
-      if(extent) {
-        map.setExtent(extent, true);
+      dojo.connect(map.graphics, "onMouseOut", function(evt) {
+        map.infoWindow.hide();
+      });
+      
+      var graphics = gl.graphics;
+      
+      if(has_coords == 1)
+      {
+        var extent = esri.graphicsExtent(graphics);
+      
+        if(!extent && graphics.length == 1) {
+            var point = graphics[0];
+            extent = new esri.geometry.Extent(point.x - 1, point.y - 1, point.x + 1, point.y + 1, point.SpatialReference);
+        }
+        
+        if(extent) {
+            map.setExtent(extent, true);
+        }
+      }
+      else
+      {
+        alert("No coordinates available for selected location.")
       }
     });
   });

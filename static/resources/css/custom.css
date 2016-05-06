@@ -21,3 +21,7 @@
   @extend .graph-box;
   width: 600px;
 }
+
+.esriPopup .titleButton.maximize {
+   display: none;
+}
