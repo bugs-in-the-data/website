@@ -1,11 +1,18 @@
-<div id="stackedBarChart" class="graph-box bar-chart"></div>
-<div id="pieChart" class="graph-box"></div>
-<div id="lineChart" class="graph-box"></div>
+<div id="bar-chart-label" class="graph-box bar-chart">
+  <div id="stackedBarChart"></div>
+</div>
+<div id="pie-chart-label" class="graph-box">
+  <div id="pieChart"></div>
+</div>
+<div id="line-chart-label" class="graph-box line-chart">
+  <div id="lineChart"></div>
+</div>
 
 <script type="text/javascript">
   // Placeholder charts
   var chart = c3.generate({
     bindto: '#stackedBarChart',
+    title: 'asdf',
     data: {
         x: 'x',
         columns: {{bar_chart|safe}},
@@ -26,11 +33,15 @@
     axis: {
       x: {
         type: 'category',
+        label: 'locations'
+      },
+      y: {
+        label: '# of unique species'
       }
     },
     grid: {
         y: {
-            lines: [{value:0}]
+            lines: [{value:0}],
         }
     },
     size: {
@@ -71,13 +82,29 @@
         },
         columns : {{line_chart|safe}},
     },
+    size: {
+      width: 600,
+      height: 400,
+    },
     axis: {
       x: {
         type: 'timeseries',
         tick: {
           format: '%Y'
+        },
+        label: {
+          text: 'year',
+        }
+      },
+      y: {
+        label: {
+          text: '# of sampled species',
         }
       }
     },
   });
+
+  $("#bar-chart-label").prepend('<h3 align="middle">Distinct Species per Location</h3>');
+  $("#pie-chart-label").prepend('<h3 align="middle">Distribution of Distinct Species</h3>');
+  $("#line-chart-label").prepend('<h3 align="middle">Biodiversity Sampling Observations</h3>');
 </script>

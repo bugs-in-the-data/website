@@ -6,6 +6,7 @@
 
 .graph-box {
   overflow: hidden;
+  vertical-align: top;
   width: 400px;
   display: inline-block;
   margin-left: 20px;
@@ -16,6 +17,11 @@
   width: 800px;
 }
 
+.line-chart {
+  @extend .graph-box;
+  width: 600px;
+}
+
 .esriPopup .titleButton.maximize {
-   display: none; 
+   display: none;
 }
